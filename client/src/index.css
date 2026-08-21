@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+body {
+    background-color: #0b0b0b;
+    font-family: "Barlow", sans-serif;
+    /* color:  rgb(248,248,248); */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-style: italic;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+h1,
+h2 {
+    color: white;
+}
+
+p,
+span,
+label {
+    font-family: "Google Sans Flex", sans-serif;
+}
+
+button {
+    font-style: italic;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+a {
+    font-family: "Google Sans Flex", sans-serif;
+}
+
+a.active {
+    color: #E46254;
+}
+
+.swiper-wrapper {
+    align-items: stretch;
+}
+
+.swiper-slide {
+    height: auto !important;
+    display: flex;
+}
+
+.swiper-slide>div {
+    width: 100%;
+}
+
+/* Main Toast */
+.custom-toast {
+    background: #222222 !important;
+    color: #ffffff !important;
+    border: 1px solid #444444;
+    border-radius: 12px;
+    font-weight: 500;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    font-family: "Google Sans Flex", sans-serif;
+}
+
+@media screen and (max-width:500px) {
+    .products {
+        display: flex;
+        flex-direction: column;
+    }
+}
