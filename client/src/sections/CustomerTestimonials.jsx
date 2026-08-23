@@ -84,7 +84,7 @@ const testimonials = [
 
 const CustomerTestimonials = () => {
   return (
-    <section className="sm:py-16 sm:lg:py-20 pb-16">
+    <section className="sm:py-13 sm:lg:py-16 pb-13">
       <div className="lg:px-12 md:px-10 sm:px-8 px-5">
         {/* Heading */}
         <div className="text-center">

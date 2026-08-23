@@ -621,7 +621,6 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-
                     <div>
                       <h6 className='font-medium mb-1'>{order.address.firstName} {order.address.lastName}</h6>
                       <p className='text-xs text-gray-600'>{order.address.address}, {order.address.city}, {order.address.postal_code}</p>

@@ -34,7 +34,7 @@ const Contact = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto lg:px-12 md:px-8 px-5 py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto lg:px-12 md:px-8 px-5 py-13 lg:py-16">
         {/* Contact Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-20">
           <div className="bg-[#222] p-8 border border-white/10 text-center">

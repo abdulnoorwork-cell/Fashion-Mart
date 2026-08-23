@@ -82,7 +82,7 @@ const About = () => {
       </div>
 
       {/* Story Section */}
-      <section className="py-16 lg:py-20">
+      <section className="py-13 lg:py-16">
         <div className="max-w-7xl mx-auto px-5">
           <div className="grid lg:grid-cols-2 gap-14 items-center">
             <FadeUp>
@@ -118,7 +118,7 @@ const About = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-16 lg:py-20 bg-[#1d1d1d]">
+      <section className="py-13 lg:py-16 bg-[#1d1d1d]">
         <div className="max-w-7xl mx-auto px-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
@@ -153,7 +153,7 @@ const About = () => {
       </section>
 
       {/* Features */}
-      <section className="py-16 lg:py-20">
+      <section className="py-13 lg:py-16">
         <div className="max-w-7xl mx-auto px-5">
           <div className="text-center">
             <Heading heading={'Why Choose Us'} />
@@ -180,7 +180,7 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="py-16 lg:py-20 bg-[#1d1d1d]">
+      <section className="py-13 lg:py-16 bg-[#1d1d1d]">
         <div className="max-w-7xl mx-auto px-5">
           <div className="text-center">
             <Heading heading={'Meet Our Team'} />
@@ -216,7 +216,7 @@ const About = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-20 lg:py-24">
+      <section className="py-16 lg:py-20">
         <FadeUp>
           <div className="max-w-4xl mx-auto text-center px-5">
             <h2 className="text-4xl md:text-5xl font-black italic uppercase">

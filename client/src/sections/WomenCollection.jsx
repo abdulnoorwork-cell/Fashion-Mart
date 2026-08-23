@@ -41,7 +41,7 @@ const WomenCollection = () => {
   return (
     <>
       <QuickViewModel product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-      <section className="py-16 lg:py-20">
+      <section className="py-13 lg:py-16">
         <div className="lg:px-12 md:px-10 sm:px-8 px-5">
           {/* Header */}
           <div className="flex items-center justify-between">

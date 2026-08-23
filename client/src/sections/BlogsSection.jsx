@@ -8,7 +8,7 @@ import Heading from "../components/Heading";
 const BlogsSection = () => {
   const { latestBlogs, navigate } = useContext(AppContext);
   return (
-    <section className="pb-16 lg:pb-20">
+    <section className="pb-13 lg:pb-16">
       <div className="lg:px-12 md:px-10 sm:px-8 px-5">
         {/* Header */}
         <div className="flex items-center justify-between">
