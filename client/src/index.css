@@ -35,6 +35,10 @@ button {
     cursor: pointer;
 }
 
+p {
+    font-size: 14px;
+}
+
 a {
     font-family: "Google Sans Flex", sans-serif;
 }
@@ -72,14 +76,13 @@ a.active {
         display: flex;
         flex-direction: column;
     }
+    button {
+        font-size: 14px;
+    }
 }
 
 @media screen and (max-width: 365px) {
     .mobile_nav_icons .user {
         display: none;
     }
-}
-
-p {
-    font-size: 14px;
 }

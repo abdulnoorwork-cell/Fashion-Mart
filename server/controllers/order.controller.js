@@ -153,10 +153,9 @@ export const placeOrder = async (req, res) => {
             const orderItems = items.map((item) => ({
                 productId: item.productId,
                 quantity: Number(item.quantity) || 1,
-                price:
-                    Number(item.offerPrice) ||
-                    Number(item.price) ||
-                    0,
+                price: Number(item.offerPrice) || Number(item.price) || 0,
+                size: item.size || null,
+                color: item.color || null,
             }));
 
             const session = await stripe.checkout.sessions.create({
@@ -388,7 +387,7 @@ export const confirmOrder = async (req, res) => {
                     size,
                     color
                 )
-                VALUES (?, ?, ?, ?)
+                VALUES (?, ?, ?, ?,?,?)
                 `,
                 [
                     order_id,
@@ -486,6 +485,7 @@ export const getUserOrders = async (req, res) => {
         oi.quantity,
         oi.price,
         p.name,
+        p.category,
         CONCAT('[', GROUP_CONCAT(pi.images), ']') AS images
       FROM orders o
       JOIN order_items oi ON o.id = oi.order_id
@@ -663,7 +663,7 @@ export const updateOrderStatus = async (req, res) => {
         }
 
         await db.query(
-            "UPDATE orders SET order_status = ? WHERE _id = ?",
+            "UPDATE orders SET order_status = ? WHERE id = ?",
             [order_status, order_id]
         );
 

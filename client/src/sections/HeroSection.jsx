@@ -138,7 +138,7 @@ const HeroSection = () => {
 
             <button
             onClick={()=>{navigate(`${slides[current].link}`);scrollTo(0,0)}}
-            className="min-w-[180px] px-8 py-3 sm:py-3.5 tracking-wide bg-amber-500 text-black hover:bg-white transition duration-200">
+            className="min-w-[180px] px-8 py-3 sm:py-3.5 tracking-wide bg-[#E46254] text-black transition duration-200">
               {slides[current].buttonText}
             </button>
           </div>

@@ -8,7 +8,7 @@ import {
 import { AppContext } from "../context/AppContext";
 
 const Orders = () => {
-    const { orders, fetchUserOrders, currency } =
+    const { orders, fetchUserOrders, currency,navigate } =
         useContext(AppContext);
 
     useEffect(() => {
@@ -33,6 +33,8 @@ const Orders = () => {
                 return "bg-gray-500/20 text-gray-400";
         }
     };
+
+    console.log(orders)
 
     return (
         <section className="min-h-screen text-white">
@@ -220,36 +222,42 @@ const Orders = () => {
                                 </div>
 
                                 {/* Address */}
-                                <div className="border-t border-white/10 mt-5 pt-5">
+                                <div className="border-t border-white/10 mt-5 pt-5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
 
-                                    <h4 className="font-semibold mb-2">
-                                        Shipping Address
-                                    </h4>
+                                    <div>
+                                        <h4 className="font-semibold mb-2">
+                                            Shipping Address
+                                        </h4>
 
-                                    <p className="text-gray-400">
-                                        {
-                                            order.address.firstName
-                                        }{" "}
-                                        {
-                                            order.address.lastName
-                                        }
-                                    </p>
+                                        <p className="text-gray-400">
+                                            {
+                                                order.address.firstName
+                                            }{" "}
+                                            {
+                                                order.address.lastName
+                                            }
+                                        </p>
 
-                                    <p className="text-gray-400">
-                                        {
-                                            order.address.address
-                                        }
-                                    </p>
+                                        <p className="text-gray-400">
+                                            {
+                                                order.address.address
+                                            }
+                                        </p>
 
-                                    <p className="text-gray-400">
-                                        {
-                                            order.address.city
-                                        }{" "}
-                                        -
-                                        {
-                                            order.address.postal_code
-                                        }
-                                    </p>
+                                        <p className="text-gray-400">
+                                            {
+                                                order.address.city
+                                            }{" "}
+                                            -
+                                            {
+                                                order.address.postal_code
+                                            }
+                                        </p>
+        
+                                    </div>
+                                    <button
+                                    onClick={() => { navigate(`/collection/${(order.category).toLowerCase()}/${(order.name).toLowerCase()}/${order.product_id}`); scrollTo(0, 0) }}
+                                    className="text-black bg-[#E46254] px-5 py-3 text-sm">Submit Review</button>
 
                                 </div>
                             </div>
