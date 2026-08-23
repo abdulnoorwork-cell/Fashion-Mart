@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
 import axios from 'axios';
-import { TfiCommentAlt } from "react-icons/tfi";
 import profile_image from '../../../public/images/profile_image.png'
 import { AiFillStar } from "react-icons/ai";
-import { MdDeleteOutline } from "react-icons/md";
 import { FaRegCommentDots } from "react-icons/fa6";
 import toast from 'react-hot-toast';
 import DashboardNavbar from './DashboardNavbar';
+import {X} from 'lucide-react'
 
 const Reviews = () => {
     const [model, setModel] = useState(false)
@@ -57,68 +56,214 @@ const Reviews = () => {
         }
     }
 
+    console.log(allReviews)
+
     return (
         <div className='flex-1 min-h-screen'>
             <DashboardNavbar />
-            <div className='p-4 md:p-6 lg:p-8'>
+            <div className='p-4 md:p-6 lg:p-8 text-gray-800'>
                 <div className='flex flex-col w-full'>
-                    <h3 className="text-xl font-bold text-gray-800 mb-4">Reviews</h3>
-                    <div>
-                        <div className='sm:grid hidden xl:grid-cols-[2fr_2fr_2fr_1fr_1fr_1fr] lg:grid-cols-[2fr_2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_2fr_1fr] gap-2 sm:py-3 py-2 px-3 text-xs uppercase font-semibold bg-gray-200 border border-dashed border-gray-300 rounded-tl-xl rounded-tr-xl'>
-                            <label>Customer</label>
-                            <label>Review</label>
-                            <label>Product</label>
-                            <label className='mx-auto xl:block hidden'>Price</label>
-                            <label className='mx-auto lg:block hidden'>Date</label>
-                            <label className='mx-auto'>Action</label>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                        <div>
+                            <h3 className="text-3xl font-bold">
+                                Customer Reviews
+                            </h3>
+                            <p className="text-gray-600 mt-1">
+                                Manage customer feedback and product reviews
+                            </p>
                         </div>
+
+                        <div className="bg-orange-50 text-orange-600 px-5 py-3 rounded-2xl font-semibold">
+                            Total Reviews: {allReviews.length}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+
+                        <div className="bg-white rounded-2xl border border-gray-200 p-5">
+                            <h5 className="text-gray-600 text-sm">
+                                Total Reviews
+                            </h5>
+                            <h3 className="text-3xl font-bold mt-2">
+                                {allReviews.length}
+                            </h3>
+                        </div>
+
+                        <div className="bg-white rounded-2xl border border-gray-200 p-5">
+                            <h5 className="text-gray-600 text-sm">
+                                Average Rating
+                            </h5>
+                            <h3 className="text-3xl font-bold mt-2">
+                                {(
+                                    allReviews.reduce((a, b) => a + b.rating, 0) /
+                                    allReviews.length || 0
+                                ).toFixed(1)}
+                            </h3>
+                        </div>
+
+                        <div className="bg-white rounded-2xl border border-gray-200 p-5">
+                            <h5 className="text-gray-600 text-sm">
+                                Pending Replies
+                            </h5>
+                            <h3 className="text-3xl font-bold mt-2">
+                                {allReviews.filter(r => !r.reply).length}
+                            </h3>
+                        </div>
+
+                    </div>
+                    <h3 className="text-xl font-bold mb-4">Reviews</h3>
+                    <div>
                         {loading ? <div className="flex items-center justify-center min-h-[180px] bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
                             <img src='/images/loading_animation.svg' alt="loader" className='mx-auto' />
                         </div> : <div>
                             {allReviews.length > 0 ?
-                                <div className='overflow-auto max-h-[75vh] scrollbar-hide relative sm:text-sm text-[13px]'>
-                                    {allReviews?.reverse().map((review, index) => (
-                                        <div key={index} className='border-b border-gray-600 sm:p-3 p-5 sm:grid flex flex-col text-center sm:text-start xl:grid-cols-[2fr_2fr_2fr_1fr_1fr_1fr] lg:grid-cols-[2fr_2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_2fr_1fr] gap-2 items-center'>
-                                            <div className='flex flex-col 2xl:flex-row max-sm:items-center 2xl:items-center 2xl:gap-3 gap-2'>
-                                                <img className='h-12 w-12 object-cover rounded-full' src={review.profile_image ? JSON.parse(review?.profile_image).url : profile_image} alt="profile_image" />
-                                                <div className='flex flex-col'>
-                                                    <h5 className='leading-[1.3em] font-medium text-base'>{review?.name}</h5>
-                                                    <h6 className='text-sm text-gray-400'>{review?.email}</h6>
+                                <div className="grid gap-5">
+
+                                    {allReviews?.slice().reverse().map((review) => (
+
+                                        <div
+                                            key={review.id}
+                                            className="
+      bg-white
+      rounded-xl
+      border
+      border-gray-200
+      p-5
+      hover:bg-gray-50
+      transition-all
+      duration-300
+    "
+                                        >
+
+                                            <div className="flex flex-col xl:flex-row gap-5">
+
+                                                {/* Customer */}
+                                                <div className="flex items-center gap-3 xl:min-w-[250px]">
+
+                                                    <img
+                                                        src={review.image ? review.image.url : profile_image}
+                                                        alt=""
+                                                        className="
+            w-14
+            h-14
+            rounded-full
+            object-cover
+            bg-gray-200
+            "
+                                                    />
+
+                                                    <div>
+                                                        <h4 className="font-semibold text-gray-900">
+                                                            {review.name}
+                                                        </h4>
+
+                                                        <p className="text-sm text-gray-600">
+                                                            {review.email}
+                                                        </p>
+                                                    </div>
+
                                                 </div>
-                                            </div>
-                                            {/* Reviews */}
-                                            <div>
-                                                <div className='flex items-center max-sm:justify-center gap-[1px] text-yellow-500 text-base'>
-                                                    {[...Array(review.rating)].map((_, i) => (
-                                                        <AiFillStar key={i} />
-                                                    ))}
+
+                                                {/* Review */}
+                                                <div className="flex-1">
+
+                                                    <div className="flex items-center gap-1 text-yellow-500 mb-2">
+
+                                                        {[...Array(review.rating)].map((_, i) => (
+                                                            <AiFillStar key={i} />
+                                                        ))}
+
+                                                    </div>
+
+                                                    <p className="text-gray-700 text-sm">
+                                                        {review.review}
+                                                    </p>
+
                                                 </div>
-                                                <h6 className='text-sm mt-0.5'>{review?.comment}</h6>
-                                            </div>
-                                            <div className='flex flex-col lg:flex-row lg:items-center sm:gap-2 gap-1.5'>
-                                                <img src={review?.images?.[0]} className='sm:w-14 sm:h-14 w-20 h-20 max-sm:mx-auto object-cover' alt="" />
-                                                <h5 className='font-medium leading-[1.2em] text-sm tracking-[-0.2px]'>{review.product_name}</h5>
-                                            </div>
-                                            <div className="mx-auto xl:block hidden">
-                                                <h6 className='category mx-auto text-center leading-[1.4em] font-medium'>{currency}. {review?.price}</h6>
-                                            </div>
-                                            <div className="mx-auto lg:block hidden">
-                                                <p className='mx-auto text-center leading-[1.4em] text-gray-400 text-sm'>{new Date(review?.created_at).toDateString()}</p>
-                                            </div>
-                                            <div className='flex items-center gap-2 mx-auto max-sm:mt-2'>
-                                                <div onClick={() => fetchSingleReview(review._id)} className='bg-[#FE6A13] text-white rounded hover:bg-orange-600 transition duration-200 cursor-pointer flex items-center gap-1 py-1.5 px-3 text-xs font-medium'>
-                                                    <span className='text-lg'><FaRegCommentDots /></span>
-                                                    Reply
+
+                                                {/* Product */}
+                                                <div className="flex items-center gap-3 xl:w-[280px]">
+
+                                                    <img
+                                                        src={review?.images?.[0]?.url}
+                                                        alt=""
+                                                        className="
+            w-16
+            h-16
+            rounded-xl
+            object-cover
+            bg-gray-200
+            "
+                                                    />
+
+                                                    <div>
+
+                                                        <h4 className="font-medium line-clamp-2">
+                                                            {review.product_name}
+                                                        </h4>
+
+                                                        <p className="text-orange-600 font-semibold mt-1">
+                                                            {currency}. {review.offerPrice}
+                                                        </p>
+
+                                                    </div>
+
                                                 </div>
-                                                {/* <div className='bg-red-50 text-red-500 text-xl p-1 rounded-md cursor-pointer'>
-                                                    <span onClick={() => deleteProduct(product._id)} className=''><MdDeleteOutline /></span>
-                                                </div> */}
+
+                                                {/* Date */}
+                                                <div className="xl:w-[140px]">
+
+                                                    <span
+                                                        className="
+            inline-flex
+            px-3
+            py-1
+            rounded-full
+            bg-gray-100
+            text-gray-600
+            text-xs
+            font-medium
+            "
+                                                    >
+                                                        {new Date(review.created_at).toLocaleDateString()}
+                                                    </span>
+
+                                                </div>
+
+                                                {/* Reply Button */}
+                                                <div>
+
+                                                    <button
+                                                        onClick={() => fetchSingleReview(review.id)}
+                                                        className="
+            flex
+            items-center
+            gap-2
+            bg-orange-500
+            hover:bg-orange-600
+            text-white
+            px-4
+            py-2
+            rounded-xl
+            transition
+            text-[13px]
+            "
+                                                    >
+                                                        <FaRegCommentDots size={16} />
+                                                        Reply
+                                                    </button>
+
+                                                </div>
+
                                             </div>
+
                                         </div>
+
                                     ))}
+
                                 </div> :
                                 <div className="flex items-center justify-center min-h-[180px] bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
-                                    <p className="text-gray-500">
+                                    <p className="text-gray-600">
                                         No reviews found
                                     </p>
                                 </div>
@@ -128,75 +273,122 @@ const Reviews = () => {
                 </div >
 
                 {/* ================= ADMIN REPLY SECTION ================= */}
-                {/* Modal */}
-                <div className={`fixed top-1/2 left-1/2 -translate-1/2 inset-0 z-50 flex flex-col w-full max-w-lg rounded bg-black/30 backdrop-blur-xs h-fit ${model && singleReview ? "flex" : "hidden"}`}>
+                <div
+                    className={`
+  fixed inset-0 z-50
+  flex items-center justify-center
+  p-4
+  ${model ? "flex" : "hidden"}
+`}
+                >
 
-                    {/* Header */}
-                    <div className="w-full flex justify-between items-center px-5 py-2 rounded-tl rounded-tr bg-orange-600">
-                        <h2 className="text-base font-medium tracking-[-0.2px]">
-                            Reply to Review
-                        </h2>
-                        <button
-                            onClick={() => setModel(false)}
-                            className="hover:text-red-500 text-lg cursor-pointer"
-                        >
-                            ✕
-                        </button>
-                    </div>
+                    <div
+                        className="
+    w-full
+    max-w-2xl
+    bg-white
+    rounded-3xl
+    shadow-2xl
+    overflow-hidden
+    "
+                    >
 
-                    {/* Content */}
-                    <div className="w-full p-5">
+                        <div className="bg-orange-500 text-white px-6 py-4 flex justify-between">
 
-                        {/* Customer Info */}
-                        <div className="flex gap-3 items-center mb-4">
-                            <img
-                                src={singleReview.profile_image ? JSON.parse(singleReview?.profile_image).url : profile_image}
-                                alt="user"
-                                className="w-10 h-10 rounded-full"
-                            />
-                            <div>
-                                <h5 className="text-sm sm:text-base font-medium">
-                                    {singleReview.name}
-                                </h5>
-                                <p className="text-sm text-gray-400">
-                                    {singleReview.email}
-                                </p>
+                            <div className="font-semibold text-lg">
+                                Reply to Review
                             </div>
+
+                            <button onClick={() => setModel(false)}>
+                                <X />
+                            </button>
+
                         </div>
 
-                        {/* Review Box */}
-                        <div className="p-3 rounded-lg text-sm sm:text-base text-gray-200 mb-4">
-                            {singleReview.comment}
+                        <div className="p-6">
+
+                            <div className="flex items-center gap-3 mb-5">
+
+                                <img
+                                    src={
+                                        singleReview.profile_image
+                                            ? JSON.parse(singleReview.profile_image).url
+                                            : profile_image
+                                    }
+                                    alt=""
+                                    className="w-14 h-14 rounded-full"
+                                />
+
+                                <div>
+                                    <h4 className="font-semibold">
+                                        {singleReview.name}
+                                    </h4>
+
+                                    <p className="text-gray-600 text-sm">
+                                        {singleReview.email}
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <div className="bg-gray-50 rounded-xl p-4 mb-5">
+                                {singleReview.review}
+                            </div>
+
+                            <textarea
+                                value={reply}
+                                onChange={(e) => setReply(e.target.value)}
+                                rows={5}
+                                placeholder="Write your reply..."
+                                className="
+        w-full
+        border
+        border-gray-600
+        rounded-xl
+        p-4
+        outline-none
+        focus:ring-1
+        focus:border-none
+        focus:ring-orange-500
+        "
+                            />
+
+                            <div className="flex justify-end gap-3 mt-5">
+
+                                <button
+                                    onClick={() => setModel(false)}
+                                    className="
+          px-5
+          py-3
+          border
+          border-gray-600
+          rounded-xl
+          "
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    onClick={() => handleReply(singleReview.id)}
+                                    className="
+          bg-orange-500
+          hover:bg-orange-600
+          text-white
+          px-5
+          py-3
+          rounded-xl
+          "
+                                >
+                                    {replyLoading ? "Sending..." : "Send Reply"}
+                                </button>
+
+                            </div>
+
                         </div>
 
-                        {/* Textarea */}
-                        <textarea
-                            value={reply}
-                            onChange={(e) => setReply(e.target.value)}
-                            placeholder="Write your reply..."
-                            rows={4}
-                            className="w-full border border-gray-500 focus:border-none rounded-lg p-3 text-sm outline-none focus:ring-1 focus:ring-orange-500"
-                        ></textarea>
                     </div>
 
-                    {/* Footer */}
-                    <div className="w-full flex justify-end gap-2 px-5 text-sm sm:text-base mb-6">
-                        <button
-                            onClick={() => setModel(false)}
-                            className="cursor-pointer px-4 py-1.5 bg-[#111] border border-gray-800"
-                        >
-                            Cancel
-                        </button>
-                        <button onClick={() => handleReply(singleReview._id)} className="cursor-pointer px-4 py-1.5 bg-orange-600 text-white rounded">
-                            {replyLoading ? "loading..." : "Send Reply"}
-                        </button>
-                    </div>
                 </div>
-                {/* Overlay */}
-                {model && <div
-                    className="fixed top-0 left-0 w-full h-screen inset-0 bg-black/60 backdrop-blur-[2px]"
-                    onClick={() => setModel(false)}
-                ></div>}
             </div>
         </div >
     )

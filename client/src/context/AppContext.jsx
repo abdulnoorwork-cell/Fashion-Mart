@@ -39,8 +39,7 @@ const AppContextProvider = ({ children }) => {
         localStorage.removeItem("expiryTime");
 
         setTimeout(() => {
-            toast.success("logout successfully")
-            navigate('/login')
+            navigate('/')
             window.location.reload()
         }, 800)
     };

@@ -28,15 +28,13 @@ label {
     font-family: "Google Sans Flex", sans-serif;
 }
 
+p {font-size: 14px;}
+
 button {
     font-style: italic;
     text-transform: uppercase;
     font-weight: 700;
     cursor: pointer;
-}
-
-p {
-    font-size: 14px;
 }
 
 a {

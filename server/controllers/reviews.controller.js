@@ -4,7 +4,7 @@ import { v2 as cloudinary } from 'cloudinary'
 export const addReview = async (req, res) => {
     try {
         const { product_id, rating, review, images } = req.body;
-        const user_id = req.user.id;
+        const { user_id } = req.params;
 
         // Check purchased product
         const [purchased] = await db.query(
@@ -151,27 +151,28 @@ export const getAllReviews = async (req, res) => {
     try {
         const sql = `
       SELECT 
-        r._id,
+        r.id,
         r.product_id,
-        r.comment,
+        r.review,
         r.rating,
         r.created_at,
         r.images,
         u.name,
         u.email,
-        u.profile_image,
+        u.image,
         p.name AS product_name,
-        p.price
+        p.offerPrice
       FROM reviews r
-      JOIN users u ON u._id = r.user_id
-      JOIN products p ON p._id = r.product_id
+      JOIN users u ON u.id = r.user_id
+      JOIN products p ON p.id = r.product_id
     `;
 
         const [data] = await db.query(sql);
 
         const result = data.map(r => ({
             ...r,
-            images: r.images ? JSON.parse(r.images) : []
+            images: r.images ? JSON.parse(r.images) : [],
+            image: r.image ? JSON.parse(r.image) : []
         }));
 
         return res.status(200).json(result);
@@ -187,15 +188,15 @@ export const getSingleReview = async (req, res) => {
 
         const sql = `
       SELECT 
-        reviews._id,
-        reviews.comment,
+        reviews.id,
+        reviews.review,
         reviews.images,
         users.name,
         users.email,
-        users.profile_image
+        users.image
       FROM reviews
-      JOIN users ON users._id = reviews.user_id
-      WHERE reviews._id = ?
+      JOIN users ON users.id = reviews.user_id
+      WHERE reviews.id = ?
     `;
 
         const [data] = await db.query(sql, [id]);

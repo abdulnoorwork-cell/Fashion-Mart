@@ -5,7 +5,7 @@ import isAdmin from '../middleware/isAdmin.js'
 
 const router = express.Router();
 
-router.post('/add', isAuthenticated, addReview);
+router.post('/add/:user_id', isAuthenticated, addReview);
 router.get('/product-reviews/:product_id',getProductReviews)
 router.get('/get-product-rating/:product_id',productRating)
 router.get('/all-reviews', getAllReviews)

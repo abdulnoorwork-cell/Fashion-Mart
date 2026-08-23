@@ -83,7 +83,7 @@ const ProductCard = ({ product, setSelectedProduct }) => {
                     <h6 className="text-lg text-[#E46254]">
                         {currency}. {product.offerPrice?.toLocaleString()}
                     </h6>
-                    <p className="line-through text-gray-500 font-medium max-md:text-sm">
+                    <p className="line-through text-gray-500 max-md:text-sm">
                         {currency}. {product.price?.toLocaleString()}
                     </p>
                 </div>

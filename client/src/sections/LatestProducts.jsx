@@ -10,7 +10,7 @@ import FadeUp from "../components/FadeUp";
 const LatestProducts = () => {
   const { latestProducts } = useContext(AppContext);
   const [selectedProduct, setSelectedProduct] = useState(null)
-  console.log(latestProducts)
+  
   return (
     <>
       <QuickViewModel product={selectedProduct} onClose={() => setSelectedProduct(null)} />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaStar } from "react-icons/fa";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -6,6 +6,7 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css"
 import "swiper/css/navigation"
 import Heading from "../components/Heading";
+import { AppContext } from "../context/AppContext";
 
 const testimonials = [
   {
@@ -83,6 +84,7 @@ const testimonials = [
 ];
 
 const CustomerTestimonials = () => {
+  const { allReviews } = useContext(AppContext)
   return (
     <section className="sm:py-13 sm:lg:py-16 pb-13">
       <div className="lg:px-12 md:px-10 sm:px-8 px-5">
@@ -105,85 +107,103 @@ const CustomerTestimonials = () => {
             0: {
               slidesPerView: 1.1,
             },
-            640: {
-              slidesPerView: 2,
-            },
             1024: {
-              slidesPerView: 3
-            },
-            1280: {
-              slidesPerView: 4,
-            },
+              slidesPerView: 2,
+            }
           }}>
-          {testimonials.map((item) => (
+          {allReviews.map((review) => (
             <SwiperSlide
-              key={item.id}
+              key={review.id}
               className="h-auto"
             >
-              <div className="bg-[#222]
-      border border-white/10
-      overflow-hidden
-      h-full
-      flex flex-col
-      hover:border-white/30
-      hover:-translate-y-2
-      transition-all
-      duration-300">
-                {/* Product Image */}
-                <div className="bg-gray-200 overflow-hidden">
-                  <img
-                    src={item.productImage}
-                    alt={item.productName}
-                    className="
-                    w-full
-                    h-full
-                    object-cover
-                    transition-transform
-                    duration-500
-                    hover:scale-110
-                  "
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="p-6 flex flex-col flex-1">
-                  {/* Product Name */}
-                  <h3 className="text-white text-xl font-bold mb-4">
-                    {item.productName}
-                  </h3>
-
-                  {/* Rating */}
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(item.rating)].map((_, index) => (
-                      <FaStar
-                        key={index}
-                        className="text-yellow-400"
-                        size={16}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Review */}
-                  <p className="text-gray-300 mb-6 line-clamp-4">
-                    "{item.review}"
-                  </p>
-
-                  {/* Customer */}
-                  <div className="mt-auto flex items-center gap-4 pt-5 border-t border-white/10">
+              <div className="space-y-6 text-white h-full">
+                <div
+                  key={review.id}
+                  className="bg-[#222] border border-white/10 p-6 h-full"
+                >
+                  {/* User */}
+                  <div className="flex flex-col sm:flex-row items-start gap-4">
                     <img
-                      src={item.image}
-                      alt={item.name}
-                      className="2xl:w-14 2xl:h-14 w-12 h-12 rounded-full object-cover"
+                      src={
+                        review.image?.url ||
+                        "/images/profile_image.png"
+                      }
+                      alt=""
+                      className="w-14 h-14 rounded-full object-cover"
                     />
 
-                    <div>
-                      <h4 className="text-white font-semibold">
-                        {item.name}
-                      </h4>
+                    <div className="flex-1">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                        <div>
+                          <h4 className="font-semibold text-lg">
+                            {review.name}
+                          </h4>
 
-                      <p className="text-gray-500 text-sm">
-                        Verified Customer
+                          <span className="text-xs bg-green-500/10 text-green-400 px-2 py-1 rounded-full">
+                            Verified Purchase
+                          </span>
+
+                          <p className="text-gray-500 text-sm mt-1">
+                            {new Date(
+                              review.created_at
+                            ).toLocaleDateString()}
+                          </p>
+                        </div>
+
+                        {/* Rating */}
+                        <div className="flex text-yellow-400">
+                          {[...Array(5)].map((_, i) => (
+                            <FaStar
+                              key={i}
+                              className={
+                                i < review.rating
+                                  ? "opacity-100"
+                                  : "opacity-20"
+                              }
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Review Text */}
+                      <p className="text-gray-300 mt-4 leading-6">
+                        {review.review}
                       </p>
+
+                      {/* Review Images */}
+                      {review.images?.length > 0 && (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-5">
+                          {review.images.map((img, i) => (
+                            <img
+                              key={i}
+                              src={img.url}
+                              alt=""
+                              className="w-full h-28 object-cover rounded-lg border border-white/10"
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Admin Reply */}
+                      {review.reply && (
+                        <div className="mt-5 ml-4 border-l-4 border-[#E46254] pl-4 py-3 bg-black/30">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="bg-red-500 px-2 py-1 text-xs font-semibold rounded">
+                              ADMIN
+                            </span>
+
+                            <span className="text-gray-500 text-xs">
+                              {new Date(
+                                review.reply_created_at
+                              ).toLocaleDateString()}
+                            </span>
+                          </div>
+
+                          <p className="text-gray-300">
+                            {review.reply}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

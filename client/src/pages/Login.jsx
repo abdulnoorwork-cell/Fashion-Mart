@@ -97,7 +97,7 @@ const Login = () => {
             </p>
 
             {/* Social Login */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
+            {/* <div className="grid grid-cols-2 gap-4 mb-8">
               <button
                 className="
                   flex items-center justify-center gap-3
@@ -110,7 +110,7 @@ const Login = () => {
                 <FaGoogle />
                 Google
               </button>
-            </div>
+            </div> */}
 
             {/* Divider */}
             <div className="flex items-center gap-4 mb-8">

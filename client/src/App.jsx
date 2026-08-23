@@ -62,8 +62,8 @@ const App = () => {
           <Route path='/about' element={<About />} />
           <Route path='/blogs' element={<Blogs />} />
           <Route path='/shop' element={<Shop />} />
-          <Route path='/register' element={<Signup />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={!token && <Signup />} />
+          <Route path='/login' element={!token && <Login />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/wishlist' element={<Wishlist />} />
           <Route path='/blogs/:category/:id' element={<SingleBlog />} />
