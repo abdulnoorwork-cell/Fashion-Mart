@@ -285,7 +285,7 @@ export const getCategoryProducts = async (req, res) => {
 
 export const getLatestCategoryProducts = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 5;
+        const limit = parseInt(req.query.limit) || 4;
         const { category } = req.params;
 
         // 1. Get latest category products

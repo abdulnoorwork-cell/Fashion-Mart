@@ -161,7 +161,7 @@ const OrderSuccessfull = () => {
 
                 </div>
 
-                <h1 className="text-4xl font-black uppercase italic mb-4">
+                <h1 className="sm:text-4xl text-3xl font-black uppercase italic mb-4">
                     Order Successful
                 </h1>
 

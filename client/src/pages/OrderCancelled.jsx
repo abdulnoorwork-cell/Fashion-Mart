@@ -53,7 +53,7 @@ const OrderCancelled = () => {
                 {/* Heading */}
                 <h1
                     className="
-            text-4xl
+            sm:text-4xl text-3xl
             font-black
             uppercase
             italic

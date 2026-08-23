@@ -6,7 +6,7 @@ const BlogCard = ({blog}) => {
     const {navigate} = useContext(AppContext);
     return (
         <article
-            onClick={()=>{navigate(`/blogs/${blog.category}/${blog.title}/${blog?.id}`);scrollTo(0,0)}}
+            onClick={()=>{navigate(`/blogs/${blog.category}/${blog?.id}`);scrollTo(0,0)}}
             key={blog.id}
             className="
                 bg-[#222]
@@ -82,7 +82,7 @@ const BlogCard = ({blog}) => {
                 </p>
 
                 <button
-                    onClick={()=>{navigate(`/blogs/${blog.category}/${blog.title}/${blog?.id}`);scrollTo(0,0)}}
+                    onClick={()=>{navigate(`/blogs/${blog.category}/${blog?.id}`);scrollTo(0,0)}}
                     className="
                     flex
                     items-center

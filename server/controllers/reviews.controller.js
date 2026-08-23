@@ -3,74 +3,82 @@ import { v2 as cloudinary } from 'cloudinary'
 
 export const addReview = async (req, res) => {
     try {
-        const { product_id, user_id, rating, comment } = req.body;
+        const { product_id, rating, review, images } = req.body;
+        const user_id = req.user.id;
 
-        if (!rating) {
-            return res.status(400).json({ message: "Rating cannot be null" });
-        }
-
-        if (!comment) {
-            return res.status(400).json({ message: "Comment cannot be null" });
-        }
-
-        const images = Array.isArray(req.body.images) ? req.body.images : [];
-
-        const allowedFormat = ["image/jpg", "image/png", "image/jpeg", "image/webp"];
-
-        const uploadedUrls = [];
-
-        // upload images
-        for (const img of images) {
-            const upload = await cloudinary.uploader.upload(img, {
-                folder: "reviews"
-            });
-
-            uploadedUrls.push(upload.secure_url);
-        }
-
-        // check purchase
-        const [orders] = await db.execute(
-            `SELECT o._id 
-             FROM orders o 
-             JOIN order_items oi ON o._id = oi.order_id 
-             WHERE o.user_id = ? 
-             AND oi.product_id = ? 
-             AND o.order_status = "DELIVERED"
-             LIMIT 1`,
+        // Check purchased product
+        const [purchased] = await db.query(
+            `
+      SELECT oi.id
+      FROM order_items oi
+      JOIN orders o ON oi.order_id = o.id
+      WHERE o.user_id = ?
+      AND oi.product_id = ?
+      AND o.order_status = 'DELIVERED'
+      LIMIT 1
+      `,
             [user_id, product_id]
         );
 
-        if (orders.length === 0) {
+        if (purchased.length === 0) {
             return res.status(403).json({
-                message: "You can only review purchased products"
+                success: false,
+                message: "Only purchasers can review this product",
             });
         }
 
-        // duplicate check
-        const [existing] = await db.execute(
-            "SELECT _id FROM reviews WHERE user_id = ? AND product_id = ?",
+        // Check already reviewed
+        const [exists] = await db.query(
+            `SELECT id FROM reviews WHERE user_id = ? AND product_id = ?`,
             [user_id, product_id]
         );
 
-        if (existing.length > 0) {
+        if (exists.length > 0) {
             return res.status(400).json({
-                message: "Already reviewed this product"
+                success: false,
+                message: "You already reviewed this product",
             });
         }
 
-        // insert review
-        await db.execute(
-            `INSERT INTO reviews 
-            (product_id, user_id, rating, comment, images) 
-            VALUES (?, ?, ?, ?, ?)`,
-            [product_id, user_id, rating, comment, JSON.stringify(uploadedUrls)]
+        let uploadedImages = [];
+
+        if (images && images.length > 0) {
+            for (const image of images) {
+                const result = await cloudinary.uploader.upload(image, {
+                    folder: "reviews",
+                });
+
+                uploadedImages.push({
+                    public_id: result.public_id,
+                    url: result.secure_url,
+                });
+            }
+        }
+
+        await db.query(
+            `
+      INSERT INTO reviews
+      (user_id, product_id, rating, review, images)
+      VALUES (?, ?, ?, ?, ?)
+      `,
+            [
+                user_id,
+                product_id,
+                rating,
+                review,
+                JSON.stringify(uploadedImages),
+            ]
         );
 
-        res.status(201).json({ success: true, message: "Review added" });
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Review error" });
+        return res.status(201).json({
+            success: true,
+            message: "Review added successfully",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
@@ -79,32 +87,42 @@ export const getProductReviews = async (req, res) => {
         const { product_id } = req.params;
 
         const sql = `
-      SELECT 
+      SELECT
         reviews.*,
         users.name,
         users.email,
-        users.profile_image,
+        users.image,
         reviews_replies.reply,
         reviews_replies.created_at AS reply_created_at
       FROM reviews
-      JOIN users ON reviews.user_id = users._id
-      LEFT JOIN reviews_replies ON reviews._id = reviews_replies.review_id
+      JOIN users
+        ON reviews.user_id = users.id
+      LEFT JOIN reviews_replies
+        ON reviews.id = reviews_replies.review_id
       WHERE reviews.product_id = ?
       ORDER BY reviews.created_at DESC
     `;
 
-        const [data] = await db.query(sql, [product_id]);
+        const [reviews] = await db.query(sql, [product_id]);
 
-        // ✅ Parse review images
-        const result = data.map(r => ({
-            ...r,
-            images: r.images ? JSON.parse(r.images) : []
+        const result = reviews.map((review) => ({
+            ...review,
+            images: review.images
+                ? JSON.parse(review.images)
+                : [],
+            image: review.image
+                ? JSON.parse(review.image)
+                : null,
         }));
 
-        return res.json(result);
+        return res.status(200).json(result);
 
-    } catch (err) {
-        return res.status(500).json({ success: false, message: err.message });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
@@ -199,27 +217,27 @@ export const getSingleReview = async (req, res) => {
 };
 
 export const adminReply = async (req, res) => {
-  try {
-    const { review_id, reply } = req.body;
+    try {
+        const { review_id, reply } = req.body;
 
-    if (!review_id) {
-      return res.status(400).json({ success: false, messege: "Invalid review ID" });
+        if (!review_id) {
+            return res.status(400).json({ success: false, messege: "Invalid review ID" });
+        }
+
+        if (!reply) {
+            return res.status(400).json({ success: false, messege: "Reply can't be empty!" });
+        }
+
+        const sql = `INSERT INTO reviews_replies (review_id, reply) VALUES (?, ?)`;
+
+        await db.query(sql, [review_id, reply]);
+
+        return res.status(201).json({
+            success: true,
+            messege: "Reply added successfully"
+        });
+
+    } catch (err) {
+        return res.status(500).json({ success: false, messege: err.message });
     }
-
-    if (!reply) {
-      return res.status(400).json({ success: false, messege: "Reply can't be empty!" });
-    }
-
-    const sql = `INSERT INTO reviews_replies (review_id, reply) VALUES (?, ?)`;
-
-    await db.query(sql, [review_id, reply]);
-
-    return res.status(201).json({
-      success: true,
-      messege: "Reply added successfully"
-    });
-
-  } catch (err) {
-    return res.status(500).json({ success: false, messege: err.message });
-  }
 };

@@ -402,7 +402,8 @@ const Cart = () => {
                           }
                           placeholder="Enter code"
                           className="
-                            min-w-0 flex-1
+                            w-full
+                          sm:min-w-0 flex-1
                             bg-[#0d0d0d]
                             border border-white/10
                             px-4 py-3

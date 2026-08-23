@@ -8,13 +8,30 @@ import {
   FaLinkedinIn,
   FaArrowRight,
 } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const aboutLinks = [
-  "Our Journey",
-  "Blogs",
-  "Contact Us",
-  "Happy Customers",
-];
+  {
+    id: 1,
+    name: "Our Journey",
+    link: '/about'
+  },
+  {
+    id: 2,
+    name: "Blogs",
+    link: '/blogs'
+  },
+  {
+    id: 3,
+    name: "Contact Us",
+    link: '/contact'
+  },
+  {
+    id: 4,
+    name: "Happy Customers",
+    link: '/'
+  },
+]
 
 const quickLinks = [
   "Privacy Policy",
@@ -107,9 +124,9 @@ const Footer = () => {
               <ul className="space-y-4">
 
                 {aboutLinks.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
+                  <li key={link.id}>
+                    <Link to={`${link.link}`}
+                      onClick={()=> scrollTo(0,0)}
                       className="
                         text-sm
                         text-gray-300
@@ -117,8 +134,8 @@ const Footer = () => {
                         transition-colors
                       "
                     >
-                      {link}
-                    </a>
+                      {link.name}
+                    </Link>
                   </li>
                 ))}
 

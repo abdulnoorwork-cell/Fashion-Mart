@@ -33,6 +33,13 @@ const SingleProduct = () => {
   const [product, setProduct] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
 
+  const [reviews, setReviews] = useState([]);
+  const [canReview, setCanReview] = useState(false);
+  const [rating, setRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [reviewText, setReviewText] = useState("");
+  const [reviewImages, setReviewImages] = useState([]);
+
   const { id } = useParams()
   const { backendUrl, toggleWishlist, isInWishlist, currency, navigate, addToCart, qty, setQty, } = useContext(AppContext);
 
@@ -59,17 +66,83 @@ const SingleProduct = () => {
     }
   }
 
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(
+        `${backendUrl}/api/review/product-reviews/${id}`,
+        { withCredentials: true }
+      );
+
+      if (response.data) {
+        setReviews(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const imageHandler = (e) => {
+    const files = Array.from(e.target.files);
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setReviewImages((prev) => [...prev, reader.result]);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const addReviewHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/review/add`,
+        {
+          product_id: id,
+          rating,
+          review: reviewText,
+          images: reviewImages,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+
+        setRating(5);
+        setReviewText("");
+        setReviewImages([]);
+
+        fetchReviews();
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed"
+      );
+    }
+  };
+
   useEffect(() => {
     fetchProduct()
     fetchRelatedProduct()
+    fetchReviews();
   }, [id, product.category])
 
   return (
-    <section className="min-h-screen text-white lg:px-12 md:px-10 sm:px-8 px-5">
+    <section className="min-h-screen text-white container mx-auto px-5">
       {/* Breadcrumb */}
       <div className="pt-6">
         <div className="py-4 text-gray-300 text-sm uppercase font-medium tracking-wide">
-          <span className="cursor-pointer hover:text-red-500 transition duration-150" onClick={() => { navigate('/'); scrollTo(0, 0) }}>Home</span> / <span className="cursor-pointer hover:text-red-500 transition duration-150" onClick={() => { navigate('/shop'); scrollTo(0, 0) }}>Shop</span> / <span onClick={() => { navigate(`/collection/${product.category}`); scrollTo(0, 0) }} className="cursor-pointer hover:text-red-500 transition duration-150">{product.category}</span> / <span className="text-red-500">{product.name}</span>
+          <span className="cursor-pointer hover:text-[#E46254] transition duration-150" onClick={() => { navigate('/'); scrollTo(0, 0) }}>Home</span> / <span className="cursor-pointer hover:text-[#E46254] transition duration-150" onClick={() => { navigate('/shop'); scrollTo(0, 0) }}>Shop</span> / <span onClick={() => { navigate(`/collection/${product.category}`); scrollTo(0, 0) }} className="cursor-pointer hover:text-[#E46254] transition duration-150">{product.category}</span> / <span className="text-[#E46254]">{product.name}</span>
         </div>
       </div>
 
@@ -83,7 +156,7 @@ const SingleProduct = () => {
               <img
                 src={activeImage?.url}
                 alt=""
-                className="w-full h-full lg:min-h-[75vh] max-h-screen object-cover bg-gray-200 border border-gray-800"
+                className="w-full h-full max-h-screen object-cover bg-gray-200 border border-gray-800"
               />
             </div>
 
@@ -95,7 +168,7 @@ const SingleProduct = () => {
                   className={`
                     bg-gray-200
                     ${activeImage === img
-                      ? "border border-red-500"
+                      ? "border border-[#E46254]"
                       : "border-0"
                     }
                   `}
@@ -103,7 +176,7 @@ const SingleProduct = () => {
                   <img
                     src={img.url}
                     alt=""
-                    className="w-full h-[60px] sm:h-[70px] md:h-[80px] xl:h-[15vh] object-cover"
+                    className="w-full h-[60px] sm:h-[70px] md:h-[80px] xl:h-[13vh] object-cover"
                   />
                 </button>
               ))}
@@ -129,7 +202,7 @@ const SingleProduct = () => {
               </div>
 
               <span className="text-gray-400">
-                (124 Reviews)
+                ({reviews.length} Reviews)
               </span>
             </div>
 
@@ -139,7 +212,7 @@ const SingleProduct = () => {
                 {currency}. {product.offerPrice?.toLocaleString()}
               </span>
 
-              <span className="text-red-500 sm:text-lg line-through">
+              <span className="text-[#E46254] sm:text-lg line-through">
                 {currency}. {product.price?.toLocaleString()}
               </span>
             </div>
@@ -305,7 +378,7 @@ const SingleProduct = () => {
         </div>
 
         {/* Description Section */}
-        <div className="mt-16 lg:mt-20">
+        <div className="mt-16">
           <h2 className="text-3xl font-bold sm:mb-8 mb-6">
             Description
           </h2>
@@ -316,13 +389,190 @@ const SingleProduct = () => {
           </div>
         </div>
 
+        {/* Add Review */}
+        <form
+          onSubmit={addReviewHandler}
+          className="bg-[#222] border border-white/10 p-6 mt-14"
+        >
+          <h3 className="text-2xl font-bold mb-5">
+            Write A Review
+          </h3>
+
+          <div className="mb-5">
+
+            <div className="flex items-center gap-1 text-xl">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <FaStar
+                  key={star}
+                  onClick={() => setRating(star)}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(0)}
+                  className={`
+          cursor-pointer transition-all duration-200
+          ${star <= (hoverRating || rating)
+                      ? "text-yellow-400"
+                      : "text-gray-600"
+                    }
+        `}
+                />
+              ))}
+            </div>
+
+            <p className="text-sm text-gray-400 mt-2">
+              {rating} out of 5 stars
+            </p>
+          </div>
+
+          <textarea
+            rows={5}
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            placeholder="Write your review..."
+            className="w-full bg-black p-4 mb-5 outline-none focus:border focus:border-[#E46254]"
+          />
+
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={imageHandler}
+            className="mb-5"
+          />
+
+          {reviewImages.length > 0 && (
+            <div className="grid grid-cols-4 gap-3 mb-5">
+              {reviewImages.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt=""
+                  className="h-24 w-full object-cover"
+                />
+              ))}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="bg-[#E46254] hover:bg-red-500 text-black transition duration-150 px-8 py-3 font-semibold"
+          >
+            Submit Review
+          </button>
+        </form>
+
+        {/* Reviews */}
+        <div className="mt-16">
+          <h2 className="text-3xl font-bold mb-8">
+            Customer Reviews ({reviews.length})
+          </h2>
+
+          {reviews.length === 0 ? (
+            <div className="bg-[#222] border border-white/10 p-8 text-center">
+              <p className="text-gray-400">
+                No reviews available yet.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {reviews.map((review, index) => (
+                <div
+                  key={index}
+                  className="bg-[#222] border border-white/10 p-6"
+                >
+                  {/* User */}
+                  <div className="flex items-start gap-4">
+                    <img
+                      src={
+                        review.image?.url ||
+                        "/images/profile_image.png"
+                      }
+                      alt=""
+                      className="w-14 h-14 rounded-full object-cover"
+                    />
+
+                    <div className="flex-1">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                        <div>
+                          <h4 className="font-semibold text-lg">
+                            {review.name}
+                          </h4>
+
+                          <p className="text-gray-500 text-sm">
+                            {new Date(
+                              review.created_at
+                            ).toLocaleDateString()}
+                          </p>
+                        </div>
+
+                        {/* Rating */}
+                        <div className="flex text-yellow-400">
+                          {[...Array(5)].map((_, i) => (
+                            <FaStar
+                              key={i}
+                              className={
+                                i < review.rating
+                                  ? "opacity-100"
+                                  : "opacity-20"
+                              }
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Review Text */}
+                      <p className="text-gray-300 mt-4 leading-7">
+                        {review.review}
+                      </p>
+
+                      {/* Review Images */}
+                      {review.images?.length > 0 && (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-5">
+                          {review.images.map((img, i) => (
+                            <img
+                              key={i}
+                              src={img.url}
+                              alt=""
+                              className="w-full h-28 object-cover rounded-lg border border-white/10"
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Admin Reply */}
+                      {review.reply && (
+                        <div className="mt-5 ml-4 border-l-4 border-[#E46254] pl-4 py-3 bg-black/30">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="bg-red-500 px-2 py-1 text-xs font-semibold rounded">
+                              ADMIN
+                            </span>
+
+                            <span className="text-gray-500 text-xs">
+                              {new Date(
+                                review.reply_created_at
+                              ).toLocaleDateString()}
+                            </span>
+                          </div>
+
+                          <p className="text-gray-300">
+                            {review.reply}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Related Products */}
         <div className="py-16 lg:py-20">
           <h2 className="text-3xl sm:text-4xl font-black italic uppercase text-center sm:mb-14 md:mb-12 mb-10">
             Related Products
           </h2>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {relatedProducts.map((product, index) => (
               <FadeUp key={product.id} delay={index * 0.2}>
                 <ProductCard key={product.id} product={product} />

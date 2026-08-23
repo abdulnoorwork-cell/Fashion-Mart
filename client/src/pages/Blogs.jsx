@@ -115,7 +115,7 @@ const Blogs = () => {
           <FadeUp>
             <img
               src={blogs[0]?.image?.url}
-              onClick={() => { navigate(`/blog/${blogs[0]?.id}`); scrollTo(0, 0) }}
+              onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.id}`);scrollTo(0,0)}}
               alt={blogs[0]?.image?.title}
               className="w-full h-full object-cover"
             />
@@ -126,7 +126,7 @@ const Blogs = () => {
               Featured
             </span>
 
-            <h2 onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.title}/${blogs[0]?.id}`);scrollTo(0,0)}} className="text-3xl sm:text-4xl 2xl:text-5xl font-black mt-6 mb-6 line-clamp-3">
+            <h2 onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.id}`);scrollTo(0,0)}} className="text-3xl sm:text-4xl 2xl:text-5xl font-black mt-6 mb-6 line-clamp-3">
               {blogs[0]?.title}
             </h2>
 
@@ -134,7 +134,7 @@ const Blogs = () => {
               {blogs[0]?.description}
             </p>
 
-            <button onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.title}/${blogs[0]?.id}`);scrollTo(0,0)}} className="flex items-center gap-3 font-semibold hover:gap-5 transition-all">
+            <button onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.id}`);scrollTo(0,0)}} className="flex items-center gap-3 font-semibold hover:gap-5 transition-all">
               Read Article
               <FaArrowRight />
             </button>

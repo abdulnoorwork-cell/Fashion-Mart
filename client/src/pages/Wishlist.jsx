@@ -8,7 +8,7 @@ import { AppContext } from "../context/AppContext";
 import ProductCard from "../components/ProductCard";
 
 const Wishlist = () => {
-  const { wishlist, currency, toggleWishlist, navigate } = useContext(AppContext);
+  const { wishlist, navigate } = useContext(AppContext);
 
   return (
     <section className="min-h-screen text-white">

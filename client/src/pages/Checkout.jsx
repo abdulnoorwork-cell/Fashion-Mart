@@ -123,7 +123,7 @@ const Checkout = () => {
                     {/* Billing Details */}
                     <div className="bg-[#202020] border border-gray-800 p-8 lg:p-10">
 
-                        <h2 className="text-3xl font-bold mb-8 uppercase">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-8 uppercase">
                             Billing Details
                         </h2>
 
