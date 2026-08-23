@@ -403,7 +403,7 @@ const SingleProduct = () => {
 
             {/* Actions */}
 
-            <div className="grid grid-cols-2 gap-4 mt-8 mb-10">
+            <div className="flex gap-4 mt-8 mb-10">
               <button
                 onClick={() =>
                   addToCart(
@@ -417,6 +417,7 @@ const SingleProduct = () => {
       bg-[#E46254]
       hover:bg-[#d65446]
       py-4
+      px-6
       rounded-xl
       font-semibold
       flex
@@ -483,7 +484,7 @@ const SingleProduct = () => {
         {/* Add Review */}
         <form
           onSubmit={addReviewHandler}
-          className="bg-[#222] border border-white/10 p-6 mt-14"
+          className="bg-[#222] border border-white/10 p-6 mt-12"
         >
           <h3 className="text-2xl font-bold mb-5">
             Write A Review
