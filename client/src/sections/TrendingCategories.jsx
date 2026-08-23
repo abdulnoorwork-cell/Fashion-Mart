@@ -49,7 +49,7 @@ const promotions = [
 export default function TrendingCategories() {
     const {navigate} = useContext(AppContext)
     return (
-        <section className="pt-16 lg:pt-20 space-y-12">
+        <section className="pt-13 lg:pt-16 space-y-12">
             <div className="lg:px-12 md:px-10 sm:px-8 px-5">
                 {/* Heading */}
                 <Heading heading='Trending Categories' />

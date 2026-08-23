@@ -41,7 +41,7 @@ const MenCollection = () => {
   return (
     <>
       <QuickViewModel product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-      <section className="pt-16 lg:pt-20">
+      <section className="pt-13 lg:pt-16">
         <div className="lg:px-12 md:px-10 sm:px-8 px-5">
           {/* Header */}
           <div>
