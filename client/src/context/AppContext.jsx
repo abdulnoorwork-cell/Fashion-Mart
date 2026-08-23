@@ -359,7 +359,12 @@ const AppContextProvider = ({ children }) => {
         if (token) {
             try {
                 setOrderLoading(true)
-                let response = await axios.get(`${backendUrl}/api/order/user-orders/${userId}`, { withCredentials: true })
+                let response = await axios.get(`${backendUrl}/api/order/user-orders/${userId}`, { 
+                    headers: {
+                        Authorization: `${token}`
+                    },
+                    withCredentials: true
+                 })
                 if (response.data) {
                     setOrders(response.data)
                     setOrderLoading(false)
@@ -424,12 +429,12 @@ const AppContextProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if (userId) {
+        if (userId && token) {
             fetchCart()
             fetchWishlist();
             fetchUserOrders();
         }
-    }, [userId])
+    }, [userId, token])
 
     return (
         <AppContext.Provider value={{

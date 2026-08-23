@@ -74,3 +74,13 @@ a.active {
         flex-direction: column;
     }
 }
+
+@media screen and (max-width: 365px) {
+    .mobile_nav_icons .user {
+        display: none;
+    }
+}
+
+p {
+    font-size: 14px;
+}

@@ -24,6 +24,7 @@ const Checkout = () => {
         (acc, item) => acc + item.offerPrice * item.quantity,
         0
     );
+    
     const shipping = subtotal >= 5000 ? 0 : 80;
     const total = subtotal + shipping - discount;
     const onSubmitHandler = async (event) => {
@@ -94,7 +95,7 @@ const Checkout = () => {
     return (
         <div className="min-h-screen text-white bg-[#0b0b0b]">
             {/* Hero */}
-            <div className="relative h-[350px]">
+            <div className="relative h-[300px]">
                 <img
                     src="/images/slide-img-5.jpg"
                     alt="Cart Banner"

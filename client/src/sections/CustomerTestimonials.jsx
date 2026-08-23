@@ -84,7 +84,7 @@ const testimonials = [
 
 const CustomerTestimonials = () => {
   return (
-    <section className="py-16 lg:py-20">
+    <section className="sm:py-16 sm:lg:py-20 pb-16">
       <div className="lg:px-12 md:px-10 sm:px-8 px-5">
         {/* Heading */}
         <div className="text-center">
@@ -103,7 +103,7 @@ const CustomerTestimonials = () => {
           spaceBetween={20}
           breakpoints={{
             0: {
-              slidesPerView: 1.2,
+              slidesPerView: 1.1,
             },
             640: {
               slidesPerView: 2,
@@ -136,7 +136,7 @@ const CustomerTestimonials = () => {
                     alt={item.productName}
                     className="
                     w-full
-                    h-[33vh]
+                    h-full
                     object-cover
                     transition-transform
                     duration-500

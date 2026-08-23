@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FaUser,
   FaEnvelope,
@@ -7,43 +7,136 @@ import {
   FaShoppingBag,
   FaSignOutAlt,
 } from "react-icons/fa";
+import profile_image from '../../public/images/profile_image.png'
 import { AppContext } from "../context/AppContext";
+import { useRef } from "react";
+import axios from "axios";
+import { FaUserCircle } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const MyAccount = () => {
-  const { user, navigate } = useContext(AppContext);
+  const [recentOrders, setRecentOrders] = useState([])
 
-  const logoutHandler = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+  const [label, setLabel] = useState("Dashboard");
+  const [loading, setLoading] = useState(false)
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [image, setImage] = useState('');
+  const [previewImage, setPreviewImage] = useState(profile_image);
+  const file = useRef();
+  const { token, userId, backendUrl, currency, navigate, wishlist, toggleWishlist, fetchUserOrders, orders, cartCount, logout } = useContext(AppContext);
 
+  const updateUserHandler = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true)
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('phone', phone);
+      formData.append('image', image || '');
+      let response = await axios.put(`${backendUrl}/api/user/update/${userId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `${token}`
+        },
+        withCredentials: true
+      })
+      if (response.data) {
+        setLabel('Dashboard')
+        setLoading(false)
+        toast.success(response.data.messege);
+        fetchUser();
+      }
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+      toast.error(error.response.data.messege);
+    }
+  }
+
+  const fetchUserData = async () => {
+    if (token && userId) {
+      try {
+        let response = await axios.get(`${backendUrl}/api/user/user-data/${userId}`, {
+          headers: {
+            Authorization: `${token}`
+          },
+          withCredentials: true
+        })
+
+        if (response.data) {
+          setName(response.data.name)
+          setEmail(response.data.email);
+          setPhone(response.data.phone);
+          setPreviewImage(response.data.image?.url)
+          await fetchUserOrders()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  const fetchLatestUserOrders = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/order/latest-user-orders/${userId}`, {
+        headers: {
+          Authorization: `${token}`
+        },
+        withCredentials: true
+      })
+      if (response.data) {
+        setRecentOrders(response.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchUserData()
+    fetchUserOrders()
+    fetchLatestUserOrders()
+  }, [userId, token])
+
+  const imageHandler = (e) => {
+    const file = e.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file)
+    fileReader.onload = () => {
+      setImage(file)
+      setPreviewImage(fileReader?.result)
+    }
+  }
+  
   return (
-    <section className="bg-[#111111] min-h-screen text-white">
+    <section className="min-h-screen text-white">
 
-      {/* Hero */}
+      {/* Hero Section */}
       <div className="relative h-[300px]">
         <img
-          src="/images/slide-img-5.jpg"
-          alt=""
+          src="/images/about-banner.jpg"
+          alt="About Us"
           className="w-full h-full object-cover"
         />
 
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute inset-0 bg-black/70"></div>
 
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-5xl font-black uppercase italic">
-              My Account
-            </h1>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-5">
+          <h1 className="text-4xl md:text-6xl font-black uppercase italic">
+            My Account
+          </h1>
 
-            <p className="text-gray-300 mt-3">
-              Manage your profile and orders
-            </p>
-          </div>
+          <p className="max-w-3xl text-gray-300 mt-3 sm:mt-4">
+            Manage your profile and orders
+          </p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-5 py-16">
 
         <div className="grid lg:grid-cols-[350px_1fr] gap-8">
 
@@ -54,13 +147,13 @@ const MyAccount = () => {
 
               <img
                 src={
-                  user?.profile_image?.url ||
+                  [previewImage] ||
                   "/images/profile_image.png"
                 }
                 alt=""
                 className="
-                  w-32
-                  h-32
+                  w-30
+                  h-30
                   rounded-full
                   object-cover
                   border-4
@@ -69,7 +162,7 @@ const MyAccount = () => {
               />
 
               <h3 className="text-2xl font-bold mt-5">
-                {user?.name || "Guest User"}
+                {name || "Guest User"}
               </h3>
 
               <p className="text-gray-400 mt-1">
@@ -81,7 +174,24 @@ const MyAccount = () => {
             <div className="mt-10 space-y-4">
 
               <button
-                onClick={() => navigate("/orders")}
+                onClick={() => setLabel("Dashboard")}
+                className="
+    w-full
+    flex
+    items-center
+    gap-3
+    bg-[#222]
+    hover:bg-[#2a2a2a]
+    p-4
+    transition
+  "
+              >
+                <FaUserCircle />
+                Dashboard
+              </button>
+
+              <button
+                onClick={() => { navigate("/orders"); scrollTo(0, 0) }}
                 className="
                   w-full
                   flex
@@ -98,7 +208,7 @@ const MyAccount = () => {
               </button>
 
               <button
-                onClick={() => navigate("/wishlist")}
+                onClick={() => { navigate("/wishlist"); scrollTo(0, 0) }}
                 className="
                   w-full
                   flex
@@ -115,7 +225,24 @@ const MyAccount = () => {
               </button>
 
               <button
-                onClick={logoutHandler}
+                onClick={() => setLabel("Edit Profile")}
+                className="
+    w-full
+    flex
+    items-center
+    gap-3
+    bg-[#222]
+    hover:bg-[#2a2a2a]
+    p-4
+    transition
+  "
+              >
+                <FaUserCircle />
+                Edit Profile
+              </button>
+
+              <button
+                onClick={logout}
                 className="
                   w-full
                   flex
@@ -139,83 +266,222 @@ const MyAccount = () => {
           <div className="space-y-8">
 
             {/* Profile Info */}
-            <div className="bg-[#1A1A1A] border border-white/10 p-8">
+            <div>
 
-              <h3 className="text-2xl font-bold mb-8">
-                Personal Information
-              </h3>
+              {label === "Edit Profile" ? (
 
-              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-[#1A1A1A] border border-white/10 p-8">
 
-                <div>
-                  <label className="text-gray-400 text-sm">
-                    Full Name
-                  </label>
+                  <h3 className="text-2xl font-bold mb-8">
+                    Edit Profile
+                  </h3>
 
-                  <div className="mt-2 bg-[#222] p-4 flex items-center gap-3">
-                    <FaUser />
-                    {user?.name}
-                  </div>
+                  <form
+                    onSubmit={updateUserHandler}
+                    className="space-y-6"
+                  >
+
+                    <div className="flex flex-col items-center">
+
+                      <img
+                        src={previewImage}
+                        alt=""
+                        onClick={() => file.current.click()}
+                        className="
+              w-30
+              h-30
+              rounded-full
+              object-cover
+              border-4
+              border-white/10
+              cursor-pointer
+            "
+                      />
+
+                      <input
+                        type="file"
+                        hidden
+                        ref={file}
+                        onChange={imageHandler}
+                      />
+
+                      <p className="text-gray-400 text-sm mt-3">
+                        Click image to change
+                      </p>
+
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+
+                      <div>
+                        <label className="block mb-2 text-sm text-gray-400">
+                          Full Name
+                        </label>
+
+                        <input
+                          type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="
+                w-full
+                bg-[#222]
+                border
+                border-white/10
+                p-4
+                outline-none
+              "
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block mb-2 text-sm text-gray-400">
+                          Email
+                        </label>
+
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="
+                w-full
+                bg-[#222]
+                border
+                border-white/10
+                p-4
+                outline-none
+              "
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block mb-2 text-sm text-gray-400">
+                          Phone
+                        </label>
+
+                        <input
+                          type="text"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="
+                w-full
+                bg-[#222]
+                border
+                border-white/10
+                p-4
+                outline-none
+              "
+                        />
+                      </div>
+
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="
+            bg-white
+            text-black
+            px-8
+            py-3
+            font-bold
+            hover:bg-gray-200
+            transition
+          "
+                    >
+                      {loading ? "Saving..." : "Save Changes"}
+                    </button>
+
+                  </form>
+
                 </div>
 
-                <div>
-                  <label className="text-gray-400 text-sm">
-                    Email Address
-                  </label>
+              ) : (
 
-                  <div className="mt-2 bg-[#222] p-4 flex items-center gap-3">
-                    <FaEnvelope />
-                    {user?.email}
+                <div className="space-y-8">
+
+                  {/* Profile Info */}
+                  <div className="bg-[#1A1A1A] border border-white/10 p-8">
+
+                    <h3 className="text-2xl font-bold mb-8">
+                      Personal Information
+                    </h3>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+
+                      <div>
+                        <label className="text-gray-400 text-sm">
+                          Full Name
+                        </label>
+
+                        <div className="mt-2 bg-[#222] p-4 flex items-center gap-3">
+                          <FaUser />
+                          {name}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-gray-400 text-sm">
+                          Email Address
+                        </label>
+
+                        <div className="mt-2 bg-[#222] p-4 flex items-center gap-3">
+                          <FaEnvelope />
+                          {email}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-gray-400 text-sm">
+                          Phone Number
+                        </label>
+
+                        <div className="mt-2 bg-[#222] p-4 flex items-center gap-3">
+                          <FaPhone />
+                          {phone || "Not Added"}
+                        </div>
+                      </div>
+
+                    </div>
+
                   </div>
+
+                  {/* Stats */}
+                  <div className="grid md:grid-cols-3 gap-6">
+
+                    <div className="bg-[#1A1A1A] border border-white/10 p-6">
+                      <h4 className="text-gray-400 text-sm">
+                        Total Orders
+                      </h4>
+
+                      <h2 className="text-4xl font-bold mt-3">
+                        {orders?.length || 0}
+                      </h2>
+                    </div>
+
+                    <div className="bg-[#1A1A1A] border border-white/10 p-6">
+                      <h4 className="text-gray-400 text-sm">
+                        Wishlist Items
+                      </h4>
+
+                      <h2 className="text-4xl font-bold mt-3">
+                        {wishlist?.length || 0}
+                      </h2>
+                    </div>
+
+                    <div className="bg-[#1A1A1A] border border-white/10 p-6">
+                      <h4 className="text-gray-400 text-sm">
+                        Cart Items
+                      </h4>
+
+                      <h2 className="text-4xl font-bold mt-3">
+                        {cartCount || 0}
+                      </h2>
+                    </div>
+
+                  </div>
+
                 </div>
 
-                <div>
-                  <label className="text-gray-400 text-sm">
-                    Phone Number
-                  </label>
-
-                  <div className="mt-2 bg-[#222] p-4 flex items-center gap-3">
-                    <FaPhone />
-                    {user?.phone || "Not Added"}
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* Stats */}
-            <div className="grid md:grid-cols-3 gap-6">
-
-              <div className="bg-[#1A1A1A] border border-white/10 p-6">
-                <h4 className="text-gray-400 text-sm">
-                  Total Orders
-                </h4>
-
-                <h2 className="text-4xl font-bold mt-3">
-                  12
-                </h2>
-              </div>
-
-              <div className="bg-[#1A1A1A] border border-white/10 p-6">
-                <h4 className="text-gray-400 text-sm">
-                  Wishlist Items
-                </h4>
-
-                <h2 className="text-4xl font-bold mt-3">
-                  8
-                </h2>
-              </div>
-
-              <div className="bg-[#1A1A1A] border border-white/10 p-6">
-                <h4 className="text-gray-400 text-sm">
-                  Cart Items
-                </h4>
-
-                <h2 className="text-4xl font-bold mt-3">
-                  4
-                </h2>
-              </div>
+              )}
 
             </div>
 
@@ -228,7 +494,7 @@ const MyAccount = () => {
                 </h3>
 
                 <button
-                  onClick={() => navigate("/orders")}
+                  onClick={() => { navigate("/orders"); scrollTo(0, 0) }}
                   className="text-gray-300 hover:text-white"
                 >
                   View All →
@@ -237,9 +503,9 @@ const MyAccount = () => {
 
               <div className="space-y-4">
 
-                {[1, 2, 3].map((item) => (
+                {recentOrders.map((item) => (
                   <div
-                    key={item}
+                    key={item.id}
                     className="
                       flex
                       items-center
@@ -250,17 +516,17 @@ const MyAccount = () => {
                   >
                     <div>
                       <h5 className="font-semibold">
-                        Order #ODR00{item}
+                        Order #{item.id}
                       </h5>
 
                       <p className="text-gray-400 text-sm">
-                        2 Products
+                        {item.name}
                       </p>
                     </div>
 
-                    <div className="text-green-500 font-medium">
-                      Delivered
-                    </div>
+                    <span className="text-green-500 font-medium text-sm capitalize">
+                      {item.order_status.charAt(0).toUpperCase() + item.order_status.slice(1).toLowerCase()}
+                    </span>
                   </div>
                 ))}
 

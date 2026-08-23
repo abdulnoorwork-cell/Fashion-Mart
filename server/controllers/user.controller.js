@@ -89,16 +89,16 @@ export const signup = async (req, res) => {
                 folder: "users"
             });
 
-            imageData = JSON.stringify({
-                url: upload.secure_url,
-                public_id: upload.public_id
-            });
+            imageData = {
+                public_id: upload.public_id,
+                url: upload.secure_url
+            };
         }
 
         // 5. Insert user
         await db.query(
             "INSERT INTO users (name, email, password, phone, image) VALUES (?, ?, ?, ?, ?)",
-            [name, email, hashPassword, phone || null, imageData]
+            [name, email, hashPassword, phone || null, JSON.stringify(imageData)]
         );
 
         res.status(201).json({
@@ -142,7 +142,7 @@ export const login = async (req, res) => {
         if (!users.length) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid email or password"
+                message: "Invalid email"
             });
         }
 
@@ -193,10 +193,12 @@ export const getUser = async (req, res) => {
     try {
         const { user_id } = req.params;
 
-        const sql = 'SELECT * FROM users WHERE _id = ?';
+        const sql = 'SELECT * FROM users WHERE id = ?';
         const [data] = await db.query(sql, [user_id]);
+        const user = data[0]
+        user.image = JSON.parse(user.image)
 
-        return res.status(200).json(data);
+        return res.status(200).json(user);
 
     } catch (err) {
         return res.status(500).json({
@@ -218,15 +220,15 @@ export const updateUser = async (req, res) => {
             });
         }
 
-        let imgUrl = null;
+        let imgData = null;
 
         // ✅ If image exists
-        if (req.files && req.files.profile_image) {
-            const { profile_image } = req.files;
+        if (req.files && req.files.image) {
+            const { image } = req.files;
 
             const allowedFormat = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
 
-            if (!allowedFormat.includes(profile_image.mimetype)) {
+            if (!allowedFormat.includes(image.mimetype)) {
                 return res.status(400).json({
                     success: false,
                     messege: "Invalid Format! Only jpg, jpeg, png, webp are allowed"
@@ -234,7 +236,7 @@ export const updateUser = async (req, res) => {
             }
 
             const cloudinaryResponse = await cloudinary.uploader.upload(
-                profile_image.tempFilePath,
+                image.tempFilePath,
                 { overwrite: true }
             );
 
@@ -245,18 +247,21 @@ export const updateUser = async (req, res) => {
                 });
             }
 
-            imgUrl = cloudinaryResponse.url;
+            imgData = {
+                public_id: cloudinaryResponse.public_id,
+                url: cloudinaryResponse.secure_url
+            }
         }
 
         // ✅ Build query dynamically
         let sql;
         let values;
 
-        if (imgUrl) {
-            sql = 'UPDATE users SET name = ?, email = ?, phone = ?, profile_image = ? WHERE _id = ?';
-            values = [name, email, phone, imgUrl, user_id];
+        if (imgData) {
+            sql = 'UPDATE users SET name = ?, email = ?, phone = ?, image = ? WHERE id = ?';
+            values = [name, email, phone, JSON.stringify(imgData), user_id];
         } else {
-            sql = 'UPDATE users SET name = ?, email = ?, phone = ? WHERE _id = ?';
+            sql = 'UPDATE users SET name = ?, email = ?, phone = ? WHERE id = ?';
             values = [name, email, phone, user_id];
         }
 

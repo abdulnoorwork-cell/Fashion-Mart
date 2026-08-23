@@ -14,7 +14,7 @@ const Wishlist = () => {
     <section className="min-h-screen text-white">
 
       {/* Hero */}
-      <div className="relative h-[350px]">
+      <div className="relative h-[300px]">
         <img
           src="/images/slide-img-5.jpg"
           alt="Shop"

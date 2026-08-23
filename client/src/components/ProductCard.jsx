@@ -17,7 +17,7 @@ const ProductCard = ({ product, setSelectedProduct }) => {
         >
 
             {/* Image Area */}
-            <div className="relative overflow-hidden w-full h-78">
+            <div className="relative overflow-hidden w-full max-h-full 2xl:h-78 sm:h-76">
 
                 {/* Discount */}
                 <span className="absolute top-3 z-10 bg-[#E46254] text-white text-sm font-semibold py-1.5 pl-2.5 pr-3.5 uppercase rounded-tr-full rounded-br-full">
@@ -76,7 +76,7 @@ const ProductCard = ({ product, setSelectedProduct }) => {
 
                 <h3
                     onClick={() => { navigate(`/collection/${(product.category).toLowerCase()}/${(product.name).toLowerCase()}/${product.id}`); scrollTo(0, 0) }}
-                    className="text-lg font-semibold mb-3 cursor-pointer text-gray-100 line-clamp-1">
+                    className="text-lg font-semibold 2xl:mb-3 mb-2 cursor-pointer text-gray-100 line-clamp-1">
                     {product.name}
                 </h3>
 

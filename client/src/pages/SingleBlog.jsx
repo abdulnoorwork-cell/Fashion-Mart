@@ -53,43 +53,34 @@ const SingleBlog = () => {
   return (
     <section className="text-white">
       {/* Hero Section */}
-      <div className="relative h-[350px]">
-        <img
-          src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920"
-          alt=""
-          className="w-full h-full object-cover"
-        />
 
-        <div className="absolute inset-0 bg-black/70"></div>
+      <div className="relative">
 
-        <div className="absolute inset-0 flex items-center justify-center text-center px-5">
-          <div className="max-w-4xl">
-            <span className="bg-white text-black px-4 py-2 text-xs font-bold uppercase">
-              {blog?.category}
-            </span>
+        <div className="flex flex-col items-center justify-center text-center px-5 py-14 max-w-4xl mx-auto">
+          <span className="bg-white text-black px-4 py-2 text-xs font-bold uppercase">
+            {blog?.category}
+          </span>
+          <h1 className="text-4xl md:text-5xl 2xl:text-6xl font-black uppercase italic mt-6">
+            {blog?.title}
+          </h1>
 
-            <h1 className="text-4xl md:text-6xl font-black uppercase italic mt-6">
-              {blog?.title}
-            </h1>
-
-            <div className="flex justify-center gap-5 mt-6 text-gray-300">
-              <span>By Abdul Noor</span>
-              <span>•</span>
-              <span>August 14, 2026</span>
-            </div>
+          <div className="flex justify-center gap-5 mt-6 text-gray-300 max-sm:text-sm">
+            <span>By Abdul Noor</span>
+            <span>•</span>
+            <span>August 14, 2026</span>
           </div>
         </div>
       </div>
 
       {/* Blog Content */}
-      <div className="max-w-7xl mx-auto px-5 py-16 lg:py-20 min-h-screen">
+      <div className="max-w-7xl mx-auto px-5 pb-16 lg:pb-20 min-h-screen">
         <img
           src={blog?.image?.url}
           alt={blog?.title}
-          className="w-full h-[500px] object-cover mb-10"
+          className="w-full h-full object-cover mb-10"
         />
 
-        <div className="space-y-8 text-gray-300 leading-8" dangerouslySetInnerHTML={{ __html: cleanHTML }}>
+        <div className="space-y-8 text-gray-300 leading-7" dangerouslySetInnerHTML={{ __html: cleanHTML }}>
         </div>
 
         {/* Tags */}

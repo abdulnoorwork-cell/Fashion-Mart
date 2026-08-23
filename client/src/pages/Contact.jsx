@@ -13,7 +13,7 @@ const Contact = () => {
   return (
     <section className="min-h-screen text-white">
       {/* Hero Section */}
-      <div className="relative h-[350px] flex items-center justify-center">
+      <div className="relative h-[300px] flex items-center justify-center">
         <img
           src="/images/contact-banner.jpg"
           alt=""

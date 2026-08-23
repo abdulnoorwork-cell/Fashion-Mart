@@ -25,7 +25,7 @@ const quickLinks = [
 
 const Footer = () => {
   return (
-    <footer className="border-t border-white/10 bg-black">
+    <footer className="border-t border-white/10 bg-black text-white">
 
 
       {/* ================================
@@ -66,7 +66,6 @@ const Footer = () => {
               {/* Heading */}
               <h3 className="
                 text-white
-                text-sm
                 md:text-base
                 font-black
                 italic
@@ -79,8 +78,6 @@ const Footer = () => {
               {/* Description */}
               <p className="
                 max-w-xl
-                text-sm
-                md:text-base
                 text-gray-300
                 leading-7
               ">
@@ -98,7 +95,7 @@ const Footer = () => {
             <div>
 
               <h3 className="
-                text-sm
+              text-lg
                 font-black
                 italic
                 uppercase
@@ -137,7 +134,7 @@ const Footer = () => {
             <div>
 
               <h3 className="
-                text-sm
+              text-lg
                 font-black
                 italic
                 uppercase
@@ -180,7 +177,7 @@ const Footer = () => {
               <div>
 
                 <h3 className="
-                text-sm
+                text-lg
                 font-black
                 italic
                 uppercase
@@ -190,7 +187,6 @@ const Footer = () => {
                 </h3>
 
                 <p className="
-                text-sm
                 text-gray-300
               ">
                   Sign up for exclusive offers, original stories,
@@ -364,7 +360,7 @@ const Footer = () => {
         ">
 
           {/* Copyright */}
-          <p className="text-[13px] text-gray-300">
+          <p className="max-sm:text-center text-sm text-gray-300">
             © 2026 by Abdul Noor. All rights researved.
           </p>
 
@@ -378,19 +374,19 @@ const Footer = () => {
             justify-center
           ">
 
-            <span className="text-xs font-bold text-gray-400">
+            <span className="text-sm font-bold text-gray-400">
               JazzCash
             </span>
 
-            <span className="text-xs font-bold text-gray-400">
+            <span className="text-sm font-bold text-gray-400">
               easypaisa
             </span>
 
-            <span className="text-xs font-bold text-gray-400">
+            <span className="text-sm font-bold text-gray-400">
               foodpanda
             </span>
 
-            <span className="text-xs font-bold text-gray-400">
+            <span className="text-sm font-bold text-gray-400">
               Mastercard
             </span>
 
@@ -403,7 +399,7 @@ const Footer = () => {
               VISA
             </span>
 
-            <span className="text-xs font-bold text-gray-400">
+            <span className="text-sm font-bold text-gray-400">
               PayPak
             </span>
 

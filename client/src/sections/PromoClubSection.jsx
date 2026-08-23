@@ -21,7 +21,7 @@ const promotions = [
 
 const PromoClubSection = () => {
   return (
-    <section className="w-full bg-[#151515] text-white">
+    <section className="w-full bg-[#151515] text-white sm:block hidden">
 
       {/* =====================================================
           PROMOTIONAL BANNERS

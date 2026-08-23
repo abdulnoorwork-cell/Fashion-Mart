@@ -60,7 +60,7 @@ const About = () => {
   return (
     <section className="text-white">
       {/* Hero Section */}
-      <div className="relative h-[350px]">
+      <div className="relative h-[300px]">
         <img
           src="/images/about-banner.jpg"
           alt="About Us"
@@ -86,9 +86,9 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-5">
           <div className="grid lg:grid-cols-2 gap-14 items-center">
             <FadeUp>
-              <span className="text-gray-400 uppercase tracking-widest">
+              <h6 className="text-gray-400 uppercase tracking-widest">
                 Our Story
-              </span>
+              </h6>
 
               <h2 className="text-4xl md:text-5xl font-black italic mt-4 mb-8">
                 Built For Performance
@@ -162,7 +162,7 @@ const About = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((item, index) => (
               <FadeUp delay={index * 0.2}>
-                <div key={item.id} className="bg-[#222] p-8 border border-white/10">
+                <div key={item.id} className="bg-[#222] p-8 border border-white/10 h-full">
                   <span className="text-4xl">{item.icon}</span>
 
                   <h3 className="text-xl font-bold mb-3 mt-6">
@@ -196,7 +196,7 @@ const About = () => {
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-[400px] sm:h-[450px] object-cover"
+                    className="w-full h-[350px] sm:h-[400px] object-cover"
                   />
 
                   <div className="p-6 text-center">

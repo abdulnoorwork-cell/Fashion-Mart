@@ -17,7 +17,7 @@ const BlogsSection = () => {
           </div>
 
           <button
-            onClick={() => { Navigate('/blogs'); scrollTo(0, 0) }}
+            onClick={() => { navigate('/blogs'); scrollTo(0, 0) }}
             className="
               hidden md:flex
               items-center
@@ -43,6 +43,7 @@ const BlogsSection = () => {
         {/* Mobile Button */}
         <div className="md:hidden flex justify-center mt-10">
           <button
+            onClick={() => { navigate('/blogs'); scrollTo(0, 0) }}
             className="
               bg-white
               text-black

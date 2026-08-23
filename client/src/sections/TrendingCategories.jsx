@@ -63,7 +63,7 @@ export default function TrendingCategories() {
                             className="group relative overflow-hidden bg-black cursor-pointer"
                         >
                             {/* Image */}
-                            <div className="overflow-hidden h-full sm:h-[450px] 2xl:h-[60vh]">
+                            <div className="overflow-hidden h-full lg:h-[440px] 2xl:h-[60vh]">
                                 <img
                                     src={item.image}
                                     alt={item.title}
@@ -77,12 +77,12 @@ export default function TrendingCategories() {
                             {/* Bottom Content */}
                             <div className="absolute bottom-0 left-0 right-0 z-10">
                                 <div className="flex items-center justify-between px-5 py-4 bg-black/50 backdrop-blur-sm">
-                                    <h3 className="text-white text-xl md:text-2xl font-black italic">
+                                    <h3 className="text-white text-lg sm:text-xl md:text-2xl font-black italic">
                                         {item.title}
                                     </h3>
 
                                     <ArrowRight
-                                        size={28}
+                                        size={26}
                                         className="text-white transition-transform duration-300 group-hover:translate-x-2"
                                     />
                                 </div>

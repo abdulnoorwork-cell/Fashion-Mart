@@ -8,7 +8,7 @@ import { AppContext } from '../../context/AppContext'
 import parcel_icon from '/images/parcel_icon.svg'
 import DashboardNavbar from './DashboardNavbar'
 
-const Orders = () => {
+const AdminOrders = () => {
     const { currency, backendUrl, isAdmin, fetchUserOrders, orderLoading, setOrderLoading, fetchAdminOrders, adminOrders } = useContext(AppContext);
 
     const updateOrderStatus = async (order_id, event) => {
@@ -109,4 +109,4 @@ const Orders = () => {
     )
 }
 
-export default Orders
+export default AdminOrders

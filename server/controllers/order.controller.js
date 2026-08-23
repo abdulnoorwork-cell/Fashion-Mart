@@ -499,13 +499,59 @@ export const getUserOrders = async (req, res) => {
 
         const result = data.map(item => ({
             ...item,
-            images: item.images ? JSON.parse(item.images) : []
+            images: item.images ? JSON.parse(item.images) : [],
+            address: item.address ? JSON.parse(item.address) : []
         }));
 
         return res.status(200).json(result);
 
     } catch (err) {
-        return res.status(500).json({ success: false, messege: err.message });
+        return res.status(500).json({ success: false, messege: 'Server Error: ' + err });
+    }
+};
+
+export const getLatetUserOrders = async (req, res) => {
+    try {
+        const { user_id } = req.params;
+        const limit = parseInt(req.query.limit) || 3;
+
+        const sql = `
+      SELECT
+        o.*,
+        oi.product_id,
+        oi.quantity,
+        oi.price,
+        p.name,
+        CONCAT('[', GROUP_CONCAT(pi.images), ']') AS images
+      FROM orders o
+      JOIN order_items oi ON o.id = oi.order_id
+      JOIN products p ON p.id = oi.product_id
+      LEFT JOIN product_images pi ON pi.product_id = p.id
+      WHERE NOT (
+        o.payment_method = 'ONLINE'
+        AND o.payment_status = 'PENDING'
+      )
+      AND o.user_id = ?
+      GROUP BY oi.id
+      ORDER BY o.created_at DESC
+      LIMIT ?
+    `;
+
+        const [data] = await db.query(sql, [user_id, limit]);
+
+        const result = data.map(item => ({
+            ...item,
+            images: item.images ? JSON.parse(item.images) : [],
+            address: item.address ? JSON.parse(item.address) : []
+        }));
+
+        return res.status(200).json(result);
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Server Error: " + err
+        });
     }
 };
 

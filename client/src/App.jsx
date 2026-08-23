@@ -19,7 +19,7 @@ import ListBlog from './pages/admin/ListBlog'
 import ProductList from './pages/admin/ProductList'
 import AddProduct from './pages/admin/AddProduct'
 import UpdateBlog from './pages/admin/UpdateBlog'
-import Orders from './pages/admin/Orders'
+import AdminOrders from './pages/admin/AdminOrders'
 import WishlistProducts from './pages/admin/WishlistProducts'
 import Reviews from './pages/admin/Reviews'
 import AdminLogin from './pages/admin/AdminLogin'
@@ -33,6 +33,7 @@ import OrderSuccessfull from './pages/OrderSuccessfull'
 import OrderCancelled from './pages/OrderCancelled'
 import Checkout from './pages/Checkout'
 import MyAccount from './pages/MyAccount'
+import Orders from './pages/Orders'
 
 const App = () => {
   const { isAdmin, token, logout } = useContext(AppContext);
@@ -75,10 +76,11 @@ const App = () => {
           <Route path='/collection/activewear' element={<CategoryProducts category="Activewear" />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password' element={<ResetPassword />} />
-          <Route path='/success' element={<OrderSuccessfull />} />
-          <Route path='/cancel' element={<OrderCancelled />} />
+          <Route path='/success' element={token && <OrderSuccessfull />} />
+          <Route path='/cancel' element={token && <OrderCancelled />} />
           <Route path='/checkout' element={token && <Checkout />} />
           <Route path='/my-account' element={token && <MyAccount />} />
+          <Route path='/orders' element={token && <Orders />} />
         </Route>
         {
           isAdmin ? <Route path='/admin' element={<Layout />}>
@@ -88,7 +90,7 @@ const App = () => {
             <Route path='products' element={<ProductList />} />
             <Route path='addproduct' element={<AddProduct />} />
             <Route path='updateblog/:blogId' element={<UpdateBlog />} />
-            <Route path='orders' element={<Orders />} />
+            <Route path='orders' element={<AdminOrders />} />
             <Route path='wishlist' element={<WishlistProducts />} />
             <Route path='reviews' element={<Reviews />} />
           </Route> : <Route path='/admin' element={<AdminLogin />} />

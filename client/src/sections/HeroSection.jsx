@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import FadeUp from '../components/FadeUp'
 import { AnimatePresence, motion } from "motion/react";
+import {AppContext} from '../context/AppContext'
 
 const slides = [
   {
@@ -11,6 +12,7 @@ const slides = [
     description:
       "Discover premium fashion crafted for comfort, confidence, and modern living.",
     buttonText: "Shop Collection",
+    link: '/shop'
   },
   {
     id: 2,
@@ -19,6 +21,7 @@ const slides = [
     description:
       "Explore activewear designed to keep up with your lifestyle and every movement.",
     buttonText: "Shop Activewear",
+    link: '/shop'
   },
   {
     id: 3,
@@ -27,6 +30,7 @@ const slides = [
     description:
       "Refresh your wardrobe with the latest trends and timeless essentials.",
     buttonText: "Explore Now",
+    link: '/shop'
   },
   {
     id: 4,
@@ -35,12 +39,15 @@ const slides = [
     description:
       "Enjoy special offers on our best-selling collections for a limited time.",
     buttonText: "Shop Sale",
+    link: '/shop'
   },
 ];
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const {navigate} = useContext(AppContext)
 
   const changeSlide = (newIndex) => {
     setIsTransitioning(true);
@@ -114,7 +121,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -30 }}
           transition={{ duration: 0.4 }}
-          className="absolute inset-0 z-30 flex items-center justify-center"
+          className="absolute inset-0 z-20 flex items-center justify-center"
         >
           <div className="max-w-3xl text-center px-6">
             <span className="inline-block mb-4 uppercase tracking-[5px] max-sm:text-sm text-white">
@@ -129,7 +136,9 @@ const HeroSection = () => {
               {slides[current].description}
             </p>
 
-            <button className="min-w-[180px] px-8 py-3 sm:py-3.5 tracking-wide bg-amber-500 text-black hover:bg-white transition duration-200">
+            <button
+            onClick={()=>{navigate(`${slides[current].link}`);scrollTo(0,0)}}
+            className="min-w-[180px] px-8 py-3 sm:py-3.5 tracking-wide bg-amber-500 text-black hover:bg-white transition duration-200">
               {slides[current].buttonText}
             </button>
           </div>
@@ -139,7 +148,7 @@ const HeroSection = () => {
       {/* Left Arrow */}
       <button
         onClick={prevSlide}
-        className="cursor-pointer absolute left-6 top-1/2 -translate-y-1/2 z-30 sm:w-12 sm:h-12 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition"
+        className="cursor-pointer absolute left-6 top-1/2 -translate-y-1/2 z-20 sm:w-12 sm:h-12 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition"
       >
         <ChevronLeft size={24} />
       </button>
@@ -147,13 +156,13 @@ const HeroSection = () => {
       {/* Right Arrow */}
       <button
         onClick={nextSlide}
-        className="cursor-pointer absolute right-6 top-1/2 -translate-y-1/2 z-30 sm:w-12 sm:h-12 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition"
+        className="cursor-pointer absolute right-6 top-1/2 -translate-y-1/2 z-20 sm:w-12 sm:h-12 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition"
       >
         <ChevronRight size={24} />
       </button>
 
       {/* Dots */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-30">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
         {slides.map((_, index) => (
           <button
             key={index}

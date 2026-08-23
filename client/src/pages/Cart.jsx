@@ -46,7 +46,7 @@ const Cart = () => {
   return (
     <section className="min-h-screen bg-[#0b0b0b] text-white">
       {/* Hero Section */}
-      <div className="relative h-[350px]">
+      <div className="relative h-[300px]">
         <img
           src="/images/slide-img-5.jpg"
           alt="Cart Banner"

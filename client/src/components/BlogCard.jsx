@@ -27,7 +27,8 @@ const BlogCard = ({blog}) => {
                     alt={blog.title}
                     className="
                     w-full
-                    h-[35vh]
+                    h-full
+                    sm:h-[35vh]
                     object-cover
                     transition-transform
                     duration-700

@@ -46,7 +46,7 @@ const Blogs = () => {
   return (
     <section className="text-white">
       {/* Hero Section */}
-      <div className="relative h-[350px]">
+      <div className="relative h-[300px]">
         <img
           src="/images/blogs-banner.jpg"
           alt=""
@@ -83,7 +83,7 @@ const Blogs = () => {
                  w-full
     bg-[#222]
     border border-white/10
-    py-4 pl-12 pr-4
+    2xl:py-4 py-3.5 pl-12 pr-4
     outline-none
     focus:border-white/30
               "
@@ -111,13 +111,13 @@ const Blogs = () => {
         </div>
 
         {/* Featured Blog */}
-        <div className="grid lg:grid-cols-2 gap-10 items-center mb-16 lg:mb-20">
+        <div className="grid lg:grid-cols-2 sm:gap-10 gap-8 items-center mb-16 lg:mb-20">
           <FadeUp>
             <img
               src={blogs[0]?.image?.url}
               onClick={() => { navigate(`/blog/${blogs[0]?.id}`); scrollTo(0, 0) }}
               alt={blogs[0]?.image?.title}
-              className="w-full sm:h-[450px] h-[400px] object-cover"
+              className="w-full h-full object-cover"
             />
           </FadeUp>
 
@@ -126,7 +126,7 @@ const Blogs = () => {
               Featured
             </span>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mt-6 mb-6">
+            <h2 onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.title}/${blogs[0]?.id}`);scrollTo(0,0)}} className="text-3xl sm:text-4xl 2xl:text-5xl font-black mt-6 mb-6 line-clamp-3">
               {blogs[0]?.title}
             </h2>
 
@@ -134,7 +134,7 @@ const Blogs = () => {
               {blogs[0]?.description}
             </p>
 
-            <button onClick={() => { navigate(`/blog/${blogs[0]?.id}`); scrollTo(0, 0) }} className="flex items-center gap-3 font-semibold hover:gap-5 transition-all">
+            <button onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.title}/${blogs[0]?.id}`);scrollTo(0,0)}} className="flex items-center gap-3 font-semibold hover:gap-5 transition-all">
               Read Article
               <FaArrowRight />
             </button>
