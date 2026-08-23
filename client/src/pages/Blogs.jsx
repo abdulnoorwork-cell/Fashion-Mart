@@ -111,7 +111,7 @@ const Blogs = () => {
         </div>
 
         {/* Featured Blog */}
-        <div className="grid lg:grid-cols-2 sm:gap-10 gap-8 items-center mb-16 lg:mb-20">
+        <div className="grid lg:grid-cols-2 sm:gap-10 gap-8 items-center mb-14">
           <FadeUp>
             <img
               src={blogs[0]?.image?.url}

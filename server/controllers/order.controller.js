@@ -86,19 +86,16 @@ export const placeOrder = async (req, res) => {
                     await conn.execute(
                         `
                         INSERT INTO order_items
-                        (
-                            order_id,
-                            product_id,
-                            quantity,
-                            price
-                        )
-                        VALUES (?, ?, ?, ?)
+  (order_id, product_id, quantity, price, size, color)
+  VALUES (?, ?, ?, ?, ?, ?)
                         `,
                         [
                             order_id,
                             productId,
                             Number(item.quantity) || 1,
                             Number(item.offerPrice) || Number(item.price) || 0,
+                            item.size,
+                            item.color
                         ]
                     );
                 }
@@ -387,7 +384,9 @@ export const confirmOrder = async (req, res) => {
                     order_id,
                     product_id,
                     quantity,
-                    price
+                    price,
+                    size,
+                    color
                 )
                 VALUES (?, ?, ?, ?)
                 `,
@@ -399,7 +398,9 @@ export const confirmOrder = async (req, res) => {
 
                     Number(item.quantity) || 1,
 
-                    Number(item.price) || 0,
+                    Number(item.offerPrice) || Number(item.price) || 0,
+                    item.size,
+                    item.color
                 ]
             );
         }
@@ -558,26 +559,32 @@ export const getLatetUserOrders = async (req, res) => {
 export const fetchAllOrders = async (req, res) => {
     try {
         const sql = `
-      SELECT 
-        o.*,
-        oi.product_id,
-        oi.quantity,
-        oi.price,
-        p.name,
-        CONCAT('[', GROUP_CONCAT(pi.images), ']') AS images
-      FROM orders o
-      JOIN order_items oi ON o._id = oi.order_id
-      JOIN products p ON p._id = oi.product_id
-      LEFT JOIN product_images pi ON pi.product_id = p._id
-      WHERE NOT (o.payment_method = "ONLINE" AND o.payment_status = "PENDING")
-      GROUP BY oi._id
+      SELECT
+    o.*,
+    oi.product_id,
+    oi.quantity,
+    oi.price,
+    oi.size,
+    oi.color,
+    p.name,
+    CONCAT('[', GROUP_CONCAT(pi.images), ']') AS images
+FROM orders o
+JOIN order_items oi ON o.id = oi.order_id
+JOIN products p ON p.id = oi.product_id
+LEFT JOIN product_images pi ON pi.product_id = p.id
+WHERE NOT (
+    o.payment_method = 'ONLINE'
+    AND o.payment_status = 'PENDING'
+)
+GROUP BY oi.id
     `;
 
         const [data] = await db.query(sql);
 
         const result = data.map(item => ({
             ...item,
-            images: item.images ? JSON.parse(item.images) : []
+            images: item.images ? JSON.parse(item.images) : [],
+            address: item.address ? JSON.parse(item.address) : [],
         }));
 
         return res.status(200).json(result);
@@ -597,14 +604,16 @@ export const getLatestOrders = async (req, res) => {
         oi.product_id,
         oi.quantity,
         oi.price,
+        oi.size,
+    oi.color,
         p.name,
         CONCAT('[', GROUP_CONCAT(pi.images), ']') AS images
       FROM orders o
-      JOIN order_items oi ON o._id = oi.order_id
-      JOIN products p ON p._id = oi.product_id
-      LEFT JOIN product_images pi ON pi.product_id = p._id
+      JOIN order_items oi ON o.id = oi.order_id
+      JOIN products p ON p.id = oi.product_id
+      LEFT JOIN product_images pi ON pi.product_id = p.id
       WHERE NOT (o.payment_method = "ONLINE" AND o.payment_status = "PENDING")
-      GROUP BY oi._id
+      GROUP BY oi.id
       ORDER BY o.created_at DESC
       LIMIT ?
     `;
@@ -613,7 +622,8 @@ export const getLatestOrders = async (req, res) => {
 
         const result = data.map(item => ({
             ...item,
-            images: item.images ? JSON.parse(item.images) : []
+            images: item.images ? JSON.parse(item.images) : [],
+            address: item.address ? JSON.parse(item.address) : [],
         }));
 
         return res.status(200).json(result);

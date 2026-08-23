@@ -588,7 +588,7 @@ const Dashboard = () => {
             View All →
           </button>
         </div>
-        <div className='flex flex-col backdrop-blur-xs'>
+        <div className='flex flex-col text-gray-800'>
           <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 gap-2 py-3 px-3 text-xs uppercase font-semibold bg-gray-200 border border-dashed border-gray-300 rounded-tl-xl rounded-tr-xl'>
             <label>Order</label>
             <label className='max-sm:hidden'>Delivery</label>
@@ -598,65 +598,60 @@ const Dashboard = () => {
           </div>
           {orderLoading ? <div className="flex items-center justify-center min-h-[180px] bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
             <img src='/images/loading_animation.svg' alt="loader" className='mx-auto' />
-          </div> : <div>
-            {Array.isArray(orders) && orders.length > 0 ?
-              <div>
-                <div className='w-full overflow-auto'>
-                  {Array.isArray(orders) && orders?.map((order, index) => (
-                    <div key={index} className="grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-600">
-                      <div className="order_image_parent flex gap-2">
-                        <img className="w-12 h-12 object-cover" src={order.images[0].url ? order.images[0].url : parcel_icon} alt="product_image" />
-                        <div className="flex flex-col justify-center">
-                          <h6 className="font-medium text-sm sm:text-base">
-                            {order?.name} <span className={`text-[#FE6A13]`}>x{order?.quantity}</span>
-                          </h6>
-                          <div className='flex flex-col leading-none gap-1 text-[13.2px] mt-1'>
-                            <h6 style={{ fontFamily: 'Outfit' }}>{order.size && "Size:"} {order.size && order.size}</h6>
-                            <h6 style={{ fontFamily: 'Outfit' }}>{order.color && "Color:"} {order.color && order.color}</h6>
-                            <h6 style={{ fontFamily: 'Outfit' }}>{order.footwear_size && "Size:"} {order.footwear_size && order.footwear_size}</h6>
-                          </div>
+          </div> : <div className='text-sm'>
+            {orders.length > 0 ?
+              <div className='overflow-hidden bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300'>
+                {orders?.map((order, index) => (
+                  <div key={index} className="border-b
+                      border-gray-200
+                      hover:bg-gray-50
+                      transition-all
+                      duration-200
+                      p-4
+                      grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-3">
+                    <div className="order_image_parent flex gap-2">
+                      <img className="w-14 h-14 rounded-sm object-cover border border-gray-200 bg-gray-200" src={order.images[0].url ? order.images[0].url : parcel_icon} alt="product_image" />
+                      <div className="flex flex-col justify-center">
+                        <h6 className="font-medium text-sm sm:text-base">
+                          {order?.name} <span className={`text-blue-600`}>x{order?.quantity}</span>
+                        </h6>
+                        <div className='flex flex-col leading-none gap-1 mt-1'>
+                          <h6>{order.size && "Size:"} {order.size && order.size}</h6>
+                          <h6>{order.color && "Color:"} {order.color && order.color}</h6>
                         </div>
                       </div>
-
-                      <div className="text-sm">
-                        <h6 className='font-medium mb-1'>{JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}</h6>
-                        <h6 className='text-xs'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city}, {JSON.parse(order.address).postal_code}</h6>
-                        <h6 className='text-xs'>{JSON.parse(order.address).email}</h6>
-                        <h6 className='text-xs'>{JSON.parse(order.address).phone}</h6>
-                      </div>
-
-                      <h6 className="font-medium">{currency}. {(order?.total_amount).toLocaleString()}</h6>
-
-                      <div className="flex flex-col text-xs font-medium">
-                        <h6>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</h6>
-                        <h6>Date: {new Date(order.created_at).toDateString()}</h6>
-                        <h6>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</h6>
-                      </div>
-                      <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(order.id, event)} className='px-3 py-2
-text-xs
-font-medium
-border
-border-gray-300
-rounded-lg
-bg-white
-focus:outline-none
-focus:ring-2
-focus:ring-orange-500'>
-                        <option value="PLACED" className='bg-[#1A1A1A]'>Order Placed</option>
-                        <option value="PACKING" className='bg-[#1A1A1A]'>Packing</option>
-                        <option value="SHIPPED" className='bg-[#1A1A1A]'>Shipped</option>
-                        <option value="OUT FOR DELIVERY" className='bg-[#1A1A1A]'>Out for delivery</option>
-                        <option value="DELIVERED" className='bg-[#1A1A1A]'>Delivered</option>
-                      </select>
                     </div>
-                  ))}
-                </div>
+
+                    <div>
+                      <h6 className='font-medium mb-1'>{order.address.firstName} {order.address.lastName}</h6>
+                      <p className='text-xs text-gray-600'>{order.address.address}, {order.address.city}, {order.address.postal_code}</p>
+                      <p className='text-xs text-gray-600'>{order.address.email}</p>
+                      <p className='text-xs text-gray-600'>{order.address.phone}</p>
+                    </div>
+
+                    <h6 className="font-medium">{currency}. {(order?.total_amount).toLocaleString()}</h6>
+
+                    <div className="flex flex-col text-xs font-medium">
+                      <h6>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</h6>
+                      <h6>Date: {new Date(order.created_at).toDateString()}</h6>
+                      <h6>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</h6>
+                    </div>
+                    <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(order.id, event)} className='p-2 font-medium border border-gray-600 focus:border-blue-600 w-fit rounded-sm'>
+                      <option value="PLACED">Order Placed</option>
+                      <option value="PACKING">Packing</option>
+                      <option value="SHIPPED">Shipped</option>
+                      <option value="OUT FOR DELIVERY">Out for delivery</option>
+                      <option value="DELIVERED">Delivered</option>
+                    </select>
+                  </div>
+                ))}
               </div> :
               <div className="flex items-center justify-center min-h-[180px] bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
                 <p className="text-gray-500">
                   No orders found
                 </p>
-              </div>}
+              </div>
+            }
           </div>}
         </div>
       </div >

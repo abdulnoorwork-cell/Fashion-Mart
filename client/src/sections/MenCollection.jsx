@@ -61,9 +61,10 @@ const MenCollection = () => {
             breakpoints={{
               0: {
                 slidesPerView: 2,
+                spaceBetween: 12
               },
               640: {
-                slidesPerView: 3,
+                slidesPerView: 3
               },
               1024: {
                 slidesPerView: 4,

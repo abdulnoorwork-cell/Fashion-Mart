@@ -86,11 +86,20 @@ export const getWishlist = async (req, res) => {
             }
         }
 
-        // 4. Attach images to products
-        const result = wishlist.map((product) => ({
-            ...product,
-            images: imageMap[product.id] || []
-        }));
+        // 4. Attach images
+        const result = wishlist.map(product => {
+            try {
+                product.sizes = product.sizes ? JSON.parse(product.sizes) : []
+                product.colors = product.colors ? JSON.parse(product.colors) : []
+            } catch (error) {
+                product.sizes = [];
+                product.colors = []
+            }
+            return {
+                ...product,
+                images: imageMap[product.id] || []
+            }
+        });
 
         return res.status(200).json(result);
 
@@ -108,16 +117,16 @@ export const getWishlistProducts = async (req, res) => {
     try {
         const sql = `
       SELECT 
-        p._id,
+        p.id,
         p.name,
         p.category,
-        p.price,
+        p.offerPrice,
         COUNT(w.product_id) AS total_wishes,
         CONCAT('[', GROUP_CONCAT(pi.images), ']') AS images
       FROM wishlist w
-      JOIN products p ON p._id = w.product_id
-      LEFT JOIN product_images pi ON pi.product_id = p._id
-      GROUP BY p._id
+      JOIN products p ON p.id = w.product_id
+      LEFT JOIN product_images pi ON pi.product_id = p.id
+      GROUP BY p.id
       ORDER BY total_wishes DESC
     `;
 

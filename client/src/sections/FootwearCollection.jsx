@@ -61,6 +61,7 @@ const FootwearCollection = () => {
             breakpoints={{
               0: {
                 slidesPerView: 2,
+                spaceBetween: 12
               },
               640: {
                 slidesPerView: 3,

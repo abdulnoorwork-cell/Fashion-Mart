@@ -151,7 +151,7 @@ const Login = () => {
                     "
                   />
                 </div>
-                <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'Please enter your email' || error === 'Invalid email or password' ? error : null}</h6>
+                <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'Please enter your email' || error === 'Invalid email' ? error : null}</h6>
               </div>
 
               {/* Password */}
@@ -194,7 +194,7 @@ const Login = () => {
                     {passwordShow ? <FaEye /> : <FaEyeSlash />}
                   </button>
                 </div>
-                <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'Please enter your password' || error === 'Invalid email or password' ? error : null}</h6>
+                <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'Please enter your password' || error === 'Incorrent password' ? error : null}</h6>
               </div>
 
               {/* Remember Me */}
