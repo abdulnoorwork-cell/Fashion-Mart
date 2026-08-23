@@ -151,8 +151,6 @@ const SingleProduct = () => {
       {/* Product Section */}
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 2xl:gap-16 xl:gap-14 sm:gap-12 gap-10">
-
-          {/* Images */}
           {/* Images */}
           <div className="lg:sticky lg:top-24 h-fit">
             <div className="flex gap-4">
@@ -200,7 +198,7 @@ const SingleProduct = () => {
         "
                 >
                   {/* Discount Badge */}
-                  <div className="absolute top-5 left-5 z-10 bg-[#E46254] text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  <div className="absolute top-5 left-5 z-10 bg-[#E46254] text-white text-sm font-medium px-3 py-1 rounded-full">
                     -
                     {Math.round(
                       ((product.price - product.offerPrice) /
@@ -218,8 +216,8 @@ const SingleProduct = () => {
             top-5
             right-5
             z-10
-            w-12
-            h-12
+            w-11
+            h-11
             rounded-full
             bg-black/50
             backdrop-blur-md
@@ -289,7 +287,7 @@ const SingleProduct = () => {
             </h1>
 
             {/* Rating */}
-            <div className="flex flex-wrap items-center gap-4 mb-6">
+            <div className="flex flex-wrap items-center sm:gap-4 gap-2 mb-6">
               <div className="flex items-center gap-1 text-yellow-400">
                 {[...Array(5)].map((_, i) => (
                   <FaStar key={i} />
@@ -307,16 +305,16 @@ const SingleProduct = () => {
             </div>
 
             {/* Price */}
-            <div className="flex items-center gap-4 mb-8">
-              <h2 className="text-4xl font-bold">
+            <div className="flex flex-wrap items-center gap-4 mb-8">
+              <h2 className="sm:text-4xl text-3xl font-bold">
                 {currency} {product.offerPrice?.toLocaleString()}
               </h2>
 
-              <span className="line-through text-gray-500 text-xl">
+              <span className="line-through text-gray-500 sm:text-xl text-lg">
                 {currency} {product.price?.toLocaleString()}
               </span>
 
-              <span className="bg-[#E46254]/10 text-[#E46254] px-3 py-1 rounded-full text-sm font-semibold">
+              <span className="bg-[#E46254]/10 text-[#E46254] px-3 py-1 rounded-full sm:text-sm text-xs font-semibold">
                 SAVE {Math.round(
                   ((product.price - product.offerPrice) /
                     product.price) *
@@ -471,7 +469,7 @@ const SingleProduct = () => {
         </div>
 
         {/* Description Section */}
-        <div className="mt-16">
+        <div className="lg:mt-16 mt-12">
           <h2 className="text-3xl font-bold sm:mb-8 mb-6">
             Description
           </h2>
@@ -529,7 +527,7 @@ const SingleProduct = () => {
             multiple
             accept="image/*"
             onChange={imageHandler}
-            className="mb-5"
+            className="mb-5 max-w-full"
           />
 
           {reviewImages.length > 0 && (
