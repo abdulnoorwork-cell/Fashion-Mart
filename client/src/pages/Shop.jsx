@@ -19,21 +19,18 @@ const Shop = () => {
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
-    const [productsPerPage, setProductsPerPage] = useState(8);
+    const [productsPerPage, setProductsPerPage] = useState(10);
 
     useEffect(() => {
         const updateItems = () => {
-            if (window.innerWidth < 640) {
-                setProductsPerPage(3)
-            }
-            else if (window.innerWidth < 1280) {
-                setProductsPerPage(4)
-            }
-            else if (window.innerWidth < 1536) {
+            if (window.innerWidth < 1280) {
                 setProductsPerPage(6)
             }
-            else {
+            else if (window.innerWidth < 1536) {
                 setProductsPerPage(8)
+            }
+            else {
+                setProductsPerPage(10)
             }
         }
         updateItems()
@@ -360,7 +357,7 @@ const Shop = () => {
                             </div>
 
                             {/* Product Grid */}
-                            <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
 
                                 {currentProducts.length > 0 ? (
 

@@ -124,11 +124,11 @@ const HeroSection = () => {
           className="absolute inset-0 z-20 flex items-center justify-center"
         >
           <div className="max-w-3xl text-center px-6">
-            <span className="inline-block mb-4 uppercase tracking-[5px] max-sm:text-sm text-white">
+            <span className="inline-block mb-4 uppercase tracking-[5px] max-sm:text-sm text-gray-300">
               New Collection
             </span>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl 2xl:text-7xl sm:mb-6 mb-5">
+            <h1 className="text-5xl lg:text-6xl 2xl:text-7xl sm:mb-6 mb-5">
               {slides[current].title}
             </h1>
 

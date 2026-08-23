@@ -13,7 +13,6 @@ const AppContextProvider = ({ children }) => {
     const [latestItemsLoading, setLatestItemsLoading] = useState(false)
     const [latestBlogLoading, setLatestBlogLoading] = useState(false)
     const [orderLoading, setOrderLoading] = useState(false)
-    const [wishlistLoading, setWishlistLoading] = useState(false)
     const initAuthUser = localStorage.getItem('User');
     const [authenticated, setAuthenticated] = useState(initAuthUser ? JSON.parse(initAuthUser) : undefined)
     const token = authenticated?.token;
@@ -191,7 +190,6 @@ const AppContextProvider = ({ children }) => {
 
     const fetchWishlistProducts = async () => {
         try {
-            setWishlistLoading(true)
             let response = await axios.get(`${backendUrl}/api/wishlist/get-wishlist-products`, {
                 headers: {
                     Authorization: `${isAdmin}`
@@ -199,12 +197,9 @@ const AppContextProvider = ({ children }) => {
                 withCredentials: true
             })
             if (response.data) {
-                setWishlist(response.data)
-                setWishlistLoading(false)
+                setWishlistProducts(response.data)
             }
-            setWishlistLoading(false)
         } catch (error) {
-            setWishlistLoading(false)
             console.log(error)
         }
     }
@@ -359,12 +354,12 @@ const AppContextProvider = ({ children }) => {
         if (token) {
             try {
                 setOrderLoading(true)
-                let response = await axios.get(`${backendUrl}/api/order/user-orders/${userId}`, { 
+                let response = await axios.get(`${backendUrl}/api/order/user-orders/${userId}`, {
                     headers: {
                         Authorization: `${token}`
                     },
                     withCredentials: true
-                 })
+                })
                 if (response.data) {
                     setOrders(response.data)
                     setOrderLoading(false)
@@ -466,8 +461,6 @@ const AppContextProvider = ({ children }) => {
             blogLoading,
             orderLoading,
             setOrderLoading,
-            wishlistLoading,
-            setWishlistLoading,
             fetchAllReviews,
             allReviews,
             latestBlogLoading,

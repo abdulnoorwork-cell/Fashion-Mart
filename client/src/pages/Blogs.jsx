@@ -97,7 +97,7 @@ const Blogs = () => {
                 key={category}
                 onClick={() => { setSelectedCategory(category); setCurrentPage(1) }}
                 className={`
-      px-5 py-3 border transition
+      px-5 py-3 border transition text-sm h-fit
       ${selectedCategory === category
                     ? "bg-white text-black border-white"
                     : "bg-[#222] border-white/10 hover:border-white/30"
@@ -115,7 +115,7 @@ const Blogs = () => {
           <FadeUp>
             <img
               src={blogs[0]?.image?.url}
-              onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.id}`);scrollTo(0,0)}}
+              onClick={() => { navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.id}`); scrollTo(0, 0) }}
               alt={blogs[0]?.image?.title}
               className="w-full h-full object-cover"
             />
@@ -126,7 +126,7 @@ const Blogs = () => {
               Featured
             </span>
 
-            <h2 onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.id}`);scrollTo(0,0)}} className="text-3xl sm:text-4xl 2xl:text-5xl font-black mt-6 mb-6 line-clamp-3">
+            <h2 onClick={() => { navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.id}`); scrollTo(0, 0) }} className="text-3xl sm:text-4xl 2xl:text-5xl font-black mt-6 mb-6 line-clamp-3">
               {blogs[0]?.title}
             </h2>
 
@@ -134,7 +134,7 @@ const Blogs = () => {
               {blogs[0]?.description}
             </p>
 
-            <button onClick={()=>{navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.id}`);scrollTo(0,0)}} className="flex items-center gap-3 font-semibold hover:gap-5 transition-all">
+            <button onClick={() => { navigate(`/blogs/${blogs[0]?.category}/${blogs[0]?.id}`); scrollTo(0, 0) }} className="flex items-center gap-3 font-semibold hover:gap-5 transition-all">
               Read Article
               <FaArrowRight />
             </button>
@@ -142,7 +142,7 @@ const Blogs = () => {
         </div>
 
         {/* Blog Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentBlogs.map((blog, index) => (
             <FadeUp key={blog.id} delay={index * 0.2}>
               <BlogCard key={blog.id} blog={blog} />

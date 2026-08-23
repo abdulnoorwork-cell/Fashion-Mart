@@ -69,7 +69,7 @@ export const addBlog = async (req, res) => {
 export const getBlogs = async (req, res) => {
     try {
         const [blogs] = await db.query(
-            "SELECT id, title, description, category, image, created_at FROM blogs"
+            "SELECT id, title, category, image, created_at FROM blogs"
         );
 
         const result = blogs.map(blog => ({
@@ -273,7 +273,7 @@ export const getLatestBlogs = async (req, res) => {
         const limit = parseInt(req.query.limit) || 3;
 
         const [blogs] = await db.query(
-            "SELECT id, title, description, category, image, created_at FROM blogs ORDER BY created_at DESC LIMIT ?",
+            "SELECT id, title, category, image, created_at FROM blogs ORDER BY created_at DESC LIMIT ?",
             [limit]
         );
 

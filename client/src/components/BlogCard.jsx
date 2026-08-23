@@ -28,7 +28,7 @@ const BlogCard = ({blog}) => {
                     className="
                     w-full
                     h-full
-                    sm:h-[35vh]
+                    sm:h-[32vh]
                     object-cover
                     transition-transform
                     duration-700
@@ -64,7 +64,7 @@ const BlogCard = ({blog}) => {
                     text-white
                     text-xl
                     sm:text-2xl
-                    mb-4
+                    mb-6
                     group-hover:text-gray-300
                     transition
                     line-clamp-3
@@ -76,11 +76,6 @@ const BlogCard = ({blog}) => {
                 >
                     {blog.title}
                 </div>
-
-                <p className="text-gray-400 mb-6 line-clamp-3">
-                    {blog.description}
-                </p>
-
                 <button
                     onClick={()=>{navigate(`/blogs/${blog.category}/${blog?.id}`);scrollTo(0,0)}}
                     className="
@@ -89,10 +84,11 @@ const BlogCard = ({blog}) => {
                     gap-1.5
                     bg-white
                     text-black
-                    px-5 py-2.5
+                    px-5 py-3
                     font-semibold
                     hover:gap-3
                     transition-all
+                    text-sm
                   "
                 >
                     Read More

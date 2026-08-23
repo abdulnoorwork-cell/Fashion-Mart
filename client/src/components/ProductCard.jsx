@@ -6,9 +6,6 @@ import { FiHeart } from 'react-icons/fi';
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const ProductCard = ({ product, setSelectedProduct }) => {
-    const [showModal, setShowModal] = useState(false);
-    const [selectedSize, setSelectedSize] = useState("");
-    const [selectedColor, setSelectedColor] = useState("");
     const { currency, navigate, toggleWishlist, isInWishlist, addToCart } = useContext(AppContext);
     return (
         <div
@@ -17,11 +14,11 @@ const ProductCard = ({ product, setSelectedProduct }) => {
         >
 
             {/* Image Area */}
-            <div className="relative overflow-hidden w-full max-h-full 2xl:h-78 sm:h-76">
+            <div className="relative overflow-hidden w-full max-h-full">
 
                 {/* Discount */}
-                <span className="absolute top-3 z-10 bg-[#E46254] text-white text-sm font-semibold py-1.5 pl-2.5 pr-3.5 uppercase rounded-tr-full rounded-br-full">
-                    {Math.round(((product.price - product.offerPrice) / product.price) * 100)}% Off
+                <span className="absolute top-3 left-3 z-10 bg-[#E46254] text-white md:text-sm text-xs py-1 pl-2.5 pr-3.5">
+                    Flat {Math.round(((product.price - product.offerPrice) / product.price) * 100)}% Off
                 </span>
 
                 {/* Wishlist */}
@@ -29,12 +26,14 @@ const ProductCard = ({ product, setSelectedProduct }) => {
                     onClick={() => toggleWishlist(product.id)}
                     className="
                                    absolute top-3 right-3
-                                   w-11 h-11
+                                   md:w-10 md:h-10
+                                   w-9 h-9
                                    rounded-full
                                    bg-black
                                    text-white
+                                   max-sm:hidden
                                    flex items-center justify-center
-                                   text-xl
+                                   md:text-xl text-lg
                                    z-10
                                  "
                 >
@@ -69,24 +68,24 @@ const ProductCard = ({ product, setSelectedProduct }) => {
             </div>
 
             {/* Content */}
-            <div className="p-5">
-                <h6 className="text-sm text-gray-400 mb-2">
+            <div className="sm:p-5 p-4">
+                <h6 className="md:text-sm max-sm:hidden text-xs text-gray-400 mb-2">
                     {product.category}
                 </h6>
 
                 <h3
                     onClick={() => { navigate(`/collection/${(product.category).toLowerCase()}/${(product.name).toLowerCase()}/${product.id}`); scrollTo(0, 0) }}
-                    className="text-lg font-semibold 2xl:mb-3 mb-2 cursor-pointer text-gray-100 line-clamp-1">
+                    className="text-lg font-semibold 2xl:mb-3 md:mb-2 mb-1 cursor-pointer text-gray-100 line-clamp-2 max-md:leading-tight">
                     {product.name}
                 </h3>
 
-                <div className='flex items-center gap-3 mb-5'>
+                <div className='flex flex-col md:flex-row md:items-center md:gap-3 md:mb-5 mb-3.5'>
                     <h6 className="text-lg text-[#E46254]">
                         {currency}. {product.offerPrice?.toLocaleString()}
                     </h6>
-                    <h6 className="line-through text-gray-500">
+                    <p className="line-through text-gray-500 font-medium max-md:text-sm">
                         {currency}. {product.price?.toLocaleString()}
-                    </h6>
+                    </p>
                 </div>
 
                 <button
@@ -111,16 +110,18 @@ const ProductCard = ({ product, setSelectedProduct }) => {
                                   w-full
                                   bg-white
                                   text-black
-                                  py-3
+                                  p-3
                                   uppercase
                                   font-bold
                                   flex
                                   items-center
                                   justify-center
                                   gap-2
+                                  md:text-sm
+                                  text-xs
                                 "
                 >
-                    <FaShoppingBag />
+                    <FaShoppingBag className="max-md:hidden" />
                     Add To Cart
                 </button>
             </div>

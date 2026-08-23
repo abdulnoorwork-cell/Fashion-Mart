@@ -110,13 +110,10 @@ const categoryProducts = ({ category }) => {
 
   useEffect(() => {
     const updateItems = () => {
-      if (window.innerWidth < 640) {
-        setProductsPerPage(3)
-      }
-      else if (window.innerWidth < 1280) {
+      if (window.innerWidth < 1024) {
         setProductsPerPage(6)
       }
-      else if (window.innerWidth < 1536) {
+      else if (window.innerWidth < 1280) {
         setProductsPerPage(8)
       }
       else {
@@ -246,7 +243,7 @@ const categoryProducts = ({ category }) => {
               </p>
             </div>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {currentProducts.map((product) => (
                 <ProductCard key={product.id} product={product} setSelectedProduct={setSelectedProduct} />
               ))}

@@ -18,7 +18,7 @@ const WomenCollection = () => {
 
   const [loading, setLoading] = useState(false)
   const [products, setProducts] = useState([])
-  
+
   const fetchCategoryProducts = async () => {
     try {
       setLoading(true)
@@ -57,21 +57,18 @@ const WomenCollection = () => {
               disableOnInteraction: false,
             }}
             loop={true}
-            spaceBetween={20}
+            spaceBetween={16}
             breakpoints={{
               0: {
-                slidesPerView: 1.1,
-              },
-              640: {
                 slidesPerView: 2,
               },
-              1024: {
+              640: {
                 slidesPerView: 3,
               },
-              1280: {
+              1024: {
                 slidesPerView: 4,
               },
-              1536: {
+              1280: {
                 slidesPerView: 5,
               },
             }}
