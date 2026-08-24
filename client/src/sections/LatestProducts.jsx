@@ -4,13 +4,13 @@ import Heading from "../components/Heading";
 import { AppContext } from "../context/AppContext";
 import QuickViewModel from "../components/QuickViewModel";
 import ProductCard from "../components/ProductCard";
-import FadeUp from "../components/FadeUp";
+import Fade from "../components/Fade";
 
 
 const LatestProducts = () => {
   const { latestProducts } = useContext(AppContext);
   const [selectedProduct, setSelectedProduct] = useState(null)
-  
+
   return (
     <>
       <QuickViewModel product={selectedProduct} onClose={() => setSelectedProduct(null)} />
@@ -24,9 +24,9 @@ const LatestProducts = () => {
           {/* Products */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
             {latestProducts.map((product,index) => (
-              <FadeUp key={product.id} delay={index * 0.2}>
+              <Fade key={product.id} delay={index * 0.2}>
                 <ProductCard key={product.id} product={product} setSelectedProduct={setSelectedProduct} />
-              </FadeUp>
+              </Fade>
             ))}
           </div>
         </div>

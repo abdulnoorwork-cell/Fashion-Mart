@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FaHeart, FaSearch, FaShoppingBag } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import QuickViewModel from "../components/QuickViewModel";
+import Fade from '../components/Fade'
 
 const categoryProducts = ({ category }) => {
 
@@ -244,8 +244,10 @@ const categoryProducts = ({ category }) => {
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-              {currentProducts.map((product) => (
-                <ProductCard key={product.id} product={product} setSelectedProduct={setSelectedProduct} />
+              {currentProducts.map((product,index) => (
+                <Fade key={product.id} delay={index * 0.2}>
+                  <ProductCard key={product.id} product={product} setSelectedProduct={setSelectedProduct} />
+                </Fade>
               ))}
             </div>
           )}

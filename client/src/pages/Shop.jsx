@@ -5,6 +5,7 @@ import {
 import ProductCard from "../components/ProductCard";
 import QuickViewModel from "../components/QuickViewModel";
 import { AppContext } from "../context/AppContext";
+import Fade from "../components/Fade";
 
 const Shop = () => {
     const { products, currency } = useContext(AppContext);
@@ -361,12 +362,10 @@ const Shop = () => {
 
                                 {currentProducts.length > 0 ? (
 
-                                    currentProducts.map((product) => (
-                                        <ProductCard
-                                            key={product.id}
-                                            product={product}
-                                            setSelectedProduct={setSelectedProduct}
-                                        />
+                                    currentProducts.map((product,index) => (
+                                        <Fade key={product.id} delay={index * 0.2}>
+                                            <ProductCard key={product.id} product={product} setSelectedProduct={setSelectedProduct} />
+                                        </Fade>
                                     ))
 
                                 ) : (

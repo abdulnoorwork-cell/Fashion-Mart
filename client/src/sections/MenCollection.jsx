@@ -76,7 +76,7 @@ const MenCollection = () => {
           >
             {products.map((product) => (
               <SwiperSlide key={product.id}>
-                <ProductCard key={product.id} product={product} setSelectedProduct={setSelectedProduct} />
+                  <ProductCard key={product.id} product={product} setSelectedProduct={setSelectedProduct} />
               </SwiperSlide >
 
             ))}
