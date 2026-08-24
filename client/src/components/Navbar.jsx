@@ -97,45 +97,50 @@ const Navbar = () => {
           {
             navLinks.map((nav, i) => (
               <NavLink key={i} to={nav.link} onClick={() => { scrollTo(0, 0) }} className={`flex gap-1.5 px-3 uppercase text-sm font-medium hover:text-red-500 transition duration-200 tracking-wider`}>
-                <span>{nav.icon}</span>
+                <span className='max-xl:hidden'>{nav.icon}</span>
                 {nav.name}
               </NavLink>
             ))
           }
         </nav>
-        <div className='flex items-center gap-3.5'>
-          {/* User */}
-          {token ? <span
-            onClick={() => { navigate('/my-account'); scrollTo(0, 0) }}
-            className='cursor-pointer'>
-            <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="transparent" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </span> : <span
-            onClick={() => { navigate('/login'); scrollTo(0, 0) }}
-            className='cursor-pointer'>
-            <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="transparent" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </span>}
-          {/* Search */}
-          <span
-          onClick={() => setSearchOpen(true)}
-          className='cursor-pointer'>
-            <svg width="24" height="24" viewBox="-2 -2 34 34" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="m29.6 27.4-6.7-6.7c1.7-2.1 2.7-4.8 2.7-7.7C25.6 6.1 20 .5 13.1.5S.5 6.1.5 13 6.1 25.5 13 25.5c2.9 0 5.6-1 7.7-2.7l6.7 6.7 2.2-2.1ZM3.5 13c0-5.2 4.3-9.5 9.5-9.5s9.5 4.3 9.5 9.5-4.3 9.5-9.5 9.5-9.5-4.3-9.5-9.5Z" fill="currentColor"></path></svg>
-          </span>
-          {/* Wishlist */}
-          <span
-            onClick={() => { navigate('/wishlist'); scrollTo(0, 0) }}
-            className='cursor-pointer relative'>
-            <FiHeart size={23} />
-            {wishlist.length > 0 &&
-              <small className='absolute right-[-6px] bottom-[0px] text-black bg-[#E46254] leading-[18px] text-[10px] w-[16px] h-[16px] rounded-full flex items-center justify-center'>{wishlist.length}</small>}
-          </span>
-          {/* Cart */}
-          <span
-            onClick={() => { navigate('/cart'); scrollTo(0, 0) }}
-            className='cursor-pointer relative'>
-            <svg width="24" height="23" viewBox="0 -2 37 35" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="m.7 11.5 9.3 18h16.9l9.3-18H.7Zm24.3 15H12l-6.7-12h26.4l-6.7 12Zm-6-23c4.2 0 7 3.3 7 5.5h3C29 5 24.7.5 19 .5S9 5 9 9h3c0-2.2 2.8-5.5 7-5.5Z" fill="currentColor"></path></svg>
-            {cartCount > 0 &&
-              <small className='absolute right-[-6px] bottom-[0px] text-black bg-[#E46254] leading-[18px] text-[10px] w-[16px] h-[16px] rounded-full flex items-center justify-center'>{cartCount}</small>}
-          </span>
+        <div className='flex items-center gap-5'>
+          <div className='flex items-center gap-3.5'>
+            {/* User */}
+            {token ? <span
+              onClick={() => { navigate('/my-account'); scrollTo(0, 0) }}
+              className='cursor-pointer'>
+              <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="transparent" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </span> : <span
+              onClick={() => { navigate('/login'); scrollTo(0, 0) }}
+              className='cursor-pointer'>
+              <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="transparent" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </span>}
+            {/* Search */}
+            <span
+              onClick={() => setSearchOpen(true)}
+              className='cursor-pointer'>
+              <svg width="24" height="24" viewBox="-2 -2 34 34" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="m29.6 27.4-6.7-6.7c1.7-2.1 2.7-4.8 2.7-7.7C25.6 6.1 20 .5 13.1.5S.5 6.1.5 13 6.1 25.5 13 25.5c2.9 0 5.6-1 7.7-2.7l6.7 6.7 2.2-2.1ZM3.5 13c0-5.2 4.3-9.5 9.5-9.5s9.5 4.3 9.5 9.5-4.3 9.5-9.5 9.5-9.5-4.3-9.5-9.5Z" fill="currentColor"></path></svg>
+            </span>
+            {/* Wishlist */}
+            <span
+              onClick={() => { navigate('/wishlist'); scrollTo(0, 0) }}
+              className='cursor-pointer relative'>
+              <FiHeart size={23} />
+              {wishlist.length > 0 &&
+                <small className='absolute right-[-6px] bottom-[0px] text-black bg-[#E46254] leading-[18px] text-[10px] w-[16px] h-[16px] rounded-full flex items-center justify-center'>{wishlist.length}</small>}
+            </span>
+            {/* Cart */}
+            <span
+              onClick={() => { navigate('/cart'); scrollTo(0, 0) }}
+              className='cursor-pointer relative'>
+              <svg width="24" height="23" viewBox="0 -2 37 35" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="m.7 11.5 9.3 18h16.9l9.3-18H.7Zm24.3 15H12l-6.7-12h26.4l-6.7 12Zm-6-23c4.2 0 7 3.3 7 5.5h3C29 5 24.7.5 19 .5S9 5 9 9h3c0-2.2 2.8-5.5 7-5.5Z" fill="currentColor"></path></svg>
+              {cartCount > 0 &&
+                <small className='absolute right-[-6px] bottom-[0px] text-black bg-[#E46254] leading-[18px] text-[10px] w-[16px] h-[16px] rounded-full flex items-center justify-center'>{cartCount}</small>}
+            </span>
+          </div>
+          <button
+            onClick={() => { navigate('/admin'); scrollTo(0, 0) }}
+            className='px-5 py-2.5 border border-[#E46254] hover:bg-[#E46254] min-w-[150px]'>Admin Panel</button>
         </div>
       </header>
 
@@ -198,6 +203,9 @@ const Navbar = () => {
                 Log in
               </NavLink>}
             </div>
+            <button
+              onClick={() => { navigate('/admin'); scrollTo(0, 0) }}
+              className='bg-[#E46254] text-black px-5 py-2.5 rounded-lg mt-5'>Admin Panel</button>
           </div>
         </div>
         {isOpen && <div
@@ -216,8 +224,8 @@ const Navbar = () => {
           </span>}
           {/* Search */}
           <span
-          onClick={() => setSearchOpen(true)}
-          className='cursor-pointer'>
+            onClick={() => setSearchOpen(true)}
+            className='cursor-pointer'>
             <svg width="24" height="24" viewBox="-2 -2 34 34" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="m29.6 27.4-6.7-6.7c1.7-2.1 2.7-4.8 2.7-7.7C25.6 6.1 20 .5 13.1.5S.5 6.1.5 13 6.1 25.5 13 25.5c2.9 0 5.6-1 7.7-2.7l6.7 6.7 2.2-2.1ZM3.5 13c0-5.2 4.3-9.5 9.5-9.5s9.5 4.3 9.5 9.5-4.3 9.5-9.5 9.5-9.5-4.3-9.5-9.5Z" fill="currentColor"></path></svg>
           </span>
           {/* Wishlist */}
@@ -300,7 +308,7 @@ const Navbar = () => {
                             );
                           } else {
                             navigate(`/blogs/${item.category}/${item?.id}`);
-                            scrollTo(0,0)
+                            scrollTo(0, 0)
                           }
 
                           setSearchOpen(false);

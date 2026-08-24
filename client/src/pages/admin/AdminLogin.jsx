@@ -6,9 +6,9 @@ import toast from "react-hot-toast";
 
 const AdminLogin = () => {
   const { backendUrl } = useContext(AppContext);
-  const [showPassword, setShowPassword] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(true)
+  const [email, setEmail] = useState('abdulnoorwork@gmail.com')
+  const [password, setPassword] = useState('toxd egor wsfl ovjv')
   const [error, setError] = useState('')
 
   const [loading, setLoading] = useState(false);
@@ -131,7 +131,7 @@ const AdminLogin = () => {
                     text-gray-500
                   "
                 >
-                  {showPassword ? (
+                  {!showPassword ? (
                     <FaEyeSlash />
                   ) : (
                     <FaEye />
