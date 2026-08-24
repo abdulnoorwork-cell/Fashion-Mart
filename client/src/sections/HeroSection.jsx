@@ -132,9 +132,9 @@ const HeroSection = () => {
               {slides[current].title}
             </h1>
 
-            <p className="text-base md:text-lg text-gray-200 mb-8 max-w-xl mx-auto">
+            <div className="text-base md:text-lg text-gray-200 mb-8 max-w-xl mx-auto">
               {slides[current].description}
-            </p>
+            </div>
 
             <button
             onClick={()=>{navigate(`${slides[current].link}`);scrollTo(0,0)}}
