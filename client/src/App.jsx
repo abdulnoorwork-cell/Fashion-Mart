@@ -47,6 +47,7 @@ const App = () => {
         Date.now() > Number(expiryTime)
       ) {
         logout();
+        localStorage.removeItem('token')
       }
     }, 60000); // every 60 seconds
 

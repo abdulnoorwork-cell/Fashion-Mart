@@ -44,7 +44,7 @@ const Login = () => {
         setTimeout(() => {
           window.location.reload()
           navigate('/')
-        }, 800)
+        }, 1000)
         setTimeout(() => {
           localStorage.removeItem('User')
           localStorage.removeItem('expiryTime')

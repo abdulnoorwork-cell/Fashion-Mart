@@ -37,7 +37,7 @@ const ForgotPassword = () => {
 
       toast.error(
         error?.response?.data?.messege ||
-          "Something went wrong"
+        "Something went wrong"
       );
     }
   };
