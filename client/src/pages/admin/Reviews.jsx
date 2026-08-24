@@ -56,8 +56,6 @@ const Reviews = () => {
         }
     }
 
-    console.log(allReviews)
-
     return (
         <div className='flex-1 min-h-screen'>
             <DashboardNavbar />
@@ -68,7 +66,7 @@ const Reviews = () => {
                             <h3 className="text-3xl font-bold">
                                 Customer Reviews
                             </h3>
-                            <p className="text-gray-600 mt-1">
+                            <p className="text-gray-500 mt-1">
                                 Manage customer feedback and product reviews
                             </p>
                         </div>
@@ -78,7 +76,7 @@ const Reviews = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                    {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
 
                         <div className="bg-white rounded-2xl border border-gray-200 p-5">
                             <h5 className="text-gray-600 text-sm">
@@ -110,14 +108,14 @@ const Reviews = () => {
                             </h3>
                         </div>
 
-                    </div>
+                    </div> */}
                     <h3 className="text-xl font-bold mb-4">Reviews</h3>
                     <div>
                         {loading ? <div className="flex items-center justify-center min-h-[180px] bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
                             <img src='/images/loading_animation.svg' alt="loader" className='mx-auto' />
                         </div> : <div>
                             {allReviews.length > 0 ?
-                                <div className="grid gap-5">
+                                <div className="grid gap-4">
 
                                     {allReviews?.slice().reverse().map((review) => (
 
@@ -239,8 +237,8 @@ const Reviews = () => {
             flex
             items-center
             gap-2
-            bg-orange-500
-            hover:bg-orange-600
+            bg-blue-500
+            hover:bg-blue-600
             text-white
             px-4
             py-2
@@ -293,7 +291,7 @@ const Reviews = () => {
     "
                     >
 
-                        <div className="bg-orange-500 text-white px-6 py-4 flex justify-between">
+                        <div className="bg-blue-600 text-white px-6 py-4 flex justify-between">
 
                             <div className="font-semibold text-lg">
                                 Reply to Review
@@ -371,8 +369,8 @@ const Reviews = () => {
                                 <button
                                     onClick={() => handleReply(singleReview.id)}
                                     className="
-          bg-orange-500
-          hover:bg-orange-600
+          bg-blue-500
+          hover:bg-blue-600
           text-white
           px-5
           py-3

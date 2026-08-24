@@ -201,7 +201,7 @@ const ProductList = () => {
 
                           {/* Actions */}
                           <div className="flex justify-center gap-2">
-                            <button
+                            {/* <button
                               onClick={() => navigate(`/admin/updateproduct/${product?.id}`)}
                               className="
                       h-8
@@ -217,7 +217,7 @@ const ProductList = () => {
                     "
                             >
                               <FaEdit size={15} />
-                            </button>
+                            </button> */}
 
                             <button
                               onClick={() => deleteProduct(product?.id)}

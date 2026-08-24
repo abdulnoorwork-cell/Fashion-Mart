@@ -136,6 +136,22 @@ const AppContextProvider = ({ children }) => {
         }
     };
 
+    const fetchWishlistProducts = async () => {
+        try {
+            let response = await axios.get(`${backendUrl}/api/wishlist/get-wishlist-products`, {
+                headers: {
+                    Authorization: `${isAdmin}`
+                },
+                withCredentials: true
+            })
+            if (response.data) {
+                setWishlistProducts(response.data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const toggleWishlist = async (productId) => {
         if (!userId || userId.length < 1) {
             toast.error("Please login first");
@@ -165,6 +181,7 @@ const AppContextProvider = ({ children }) => {
                     ]);
 
                     await fetchWishlist()
+                    await fetchWishlistProducts()
 
                     toast.success(response.data.message)
 
@@ -186,22 +203,6 @@ const AppContextProvider = ({ children }) => {
             console.log(error);
         }
     };
-
-    const fetchWishlistProducts = async () => {
-        try {
-            let response = await axios.get(`${backendUrl}/api/wishlist/get-wishlist-products`, {
-                headers: {
-                    Authorization: `${isAdmin}`
-                },
-                withCredentials: true
-            })
-            if (response.data) {
-                setWishlistProducts(response.data)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     const addToCart = async (
         productId,
