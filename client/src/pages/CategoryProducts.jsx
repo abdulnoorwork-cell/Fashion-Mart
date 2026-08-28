@@ -4,7 +4,7 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import QuickViewModel from "../components/QuickViewModel";
-import Fade from '../components/Fade'
+import { motion } from "framer-motion";
 
 const categoryProducts = ({ category }) => {
 
@@ -129,6 +129,32 @@ const categoryProducts = ({ category }) => {
     fetchCategoryProducts();
   }, [category])
 
+  const containerVariants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 60,
+      scale: 0.95,
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.1, 0.25, 1],
+      },
+    },
+  };
+
   return (
     <>
       <QuickViewModel product={selectedProduct} onClose={() => setSelectedProduct(null)} />
@@ -143,7 +169,8 @@ const categoryProducts = ({ category }) => {
 
           <div className="absolute inset-0 bg-black/70" />
 
-          <div className="absolute inset-0 flex flex-col justify-center items-center">
+          <div
+            className="absolute inset-0 flex flex-col justify-center items-center">
             <h1 className="text-4xl md:text-6xl font-black uppercase italic">
               {category} Collection
             </h1>
@@ -157,7 +184,12 @@ const categoryProducts = ({ category }) => {
 
         {/* Products */}
         <div className="px-5 md:px-8 lg:px-12 py-13 min-h-screen">
-          <div className="flex justify-between items-center mb-10">
+          <motion.div
+            className="flex justify-between items-center mb-10"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}>
 
             <h3 className="text-2xl sm:text-3xl">Products ({products.length})</h3>
 
@@ -230,10 +262,10 @@ const categoryProducts = ({ category }) => {
                 </option>
               </select>
             </div>
-          </div>
+          </motion.div>
 
           {currentProducts.length === 0 ? (
-            <div className="text-center py-20">
+            <div className="flex flex-col justify-center items-center min-h-[40vh]">
               <h2 className="text-3xl font-bold mb-3">
                 No Products Found
               </h2>
@@ -243,34 +275,60 @@ const categoryProducts = ({ category }) => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-              {currentProducts.map((product,index) => (
-                <Fade key={product.id} delay={index * 0.2}>
-                  <ProductCard key={product.id} product={product} setSelectedProduct={setSelectedProduct} />
-                </Fade>
+            <motion.div
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.1 }}>
+              {currentProducts.map((product) => (
+                <motion.div
+                  key={product.id}
+                  variants={cardVariants}
+                  whileHover={{
+                    y: -8,
+                    transition: { duration: 0.2 },
+                  }}
+                >
+                  <ProductCard
+                    product={product}
+                    setSelectedProduct={setSelectedProduct}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
 
           {/* Results Info */}
-          <div className="mt-12 text-center text-gray-400">
-            Showing{" "}
-            <span className="text-white font-semibold">
-              {filteredProducts.length === 0 ? 0 : startIndex + 1}
-            </span>
-            -
-            <span className="text-white font-semibold">
-              {Math.min(endIndex, filteredProducts.length)}
-            </span>{" "}
-            of{" "}
-            <span className="text-white font-semibold">
-              {filteredProducts.length}
-            </span>{" "}
-            products
-          </div>
+          {totalPages > 1 &&
+            <motion.div
+              className="mt-12 text-center text-gray-400"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}>
+              Showing{" "}
+              <span className="text-white font-semibold">
+                {filteredProducts.length === 0 ? 0 : startIndex + 1}
+              </span>
+              -
+              <span className="text-white font-semibold">
+                {Math.min(endIndex, filteredProducts.length)}
+              </span>{" "}
+              of{" "}
+              <span className="text-white font-semibold">
+                {filteredProducts.length}
+              </span>{" "}
+              products
+            </motion.div>}
 
           {/* Professional Pagination */}
-          {totalPages > 1 && <div className="flex items-center justify-center gap-2 mt-8 flex-wrap">
+          {totalPages > 1 && <motion.div
+            className="flex items-center justify-center gap-2 mt-8 flex-wrap"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}>
 
             {/* Previous */}
             <button
@@ -328,7 +386,7 @@ const categoryProducts = ({ category }) => {
               Next
             </button>
 
-          </div>}
+          </motion.div>}
 
         </div>
       </section>

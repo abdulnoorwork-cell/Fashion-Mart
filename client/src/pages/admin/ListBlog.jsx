@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { AppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
-import cross_icon from '/images/cross_icon.svg'
 import { useContext } from 'react';
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteOutline } from 'react-icons/md'
-import DashboardNavbar from './DashboardNavbar';
+import { CalendarDays, FileText } from 'lucide-react';
 
 const ListBlog = () => {
   const { backendUrl, navigate, isAdmin, blogs, fetchBlogs, blogLoading } = useContext(AppContext);
@@ -38,173 +37,180 @@ const ListBlog = () => {
   }, [])
 
   return (
-    <div className='flex-1 min-h-screen'>
-      <DashboardNavbar />
-      <div className="p-4 md:p-6 lg:p-8">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-gray-800">
-            Blogs
-          </h3>
-        </div>
-        <div className="
-          text-xs
-          uppercase
-          py-3
-          px-4
-          font-semibold
-          grid
-          xl:grid-cols-[2.5fr_3fr_1fr_1fr_1fr]
-          lg:grid-cols-[2.5fr_3fr_1fr_1fr]
-          sm:grid-cols-[2fr_3fr_1fr]
-          grid-cols-[1fr]
-          gap-4
-          bg-gray-100
-          border
-          border-gray-200
-          rounded-t-xl
-          text-gray-600
-        ">
-          <label>Blog</label>
-          <label className="hidden sm:block">Description</label>
-          <label className="hidden lg:block mx-auto">Category</label>
-          <label className="hidden xl:block mx-auto">Date</label>
-          <label className="mx-auto">Action</label>
-        </div>
-        {blogLoading ? <div className="flex items-center justify-center bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
-          <img src='/images/loading_animation.svg' alt="loader" className='mx-auto' />
-        </div> : <div>
-          {Array.isArray(blogs) && blogs.length > 0 ?
-            <div className="w-full">
-              <div className="overflow-hidden bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-bold text-gray-800">
+          Blogs
+        </h3>
+      </div>
+      <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden ">
 
-                {blogs?.reverse().map((blog) => (
-                  <div
-                    key={blog?.id}
+        {/* Header */}
+
+        <div
+          className="
+                hidden lg:grid
+                grid-cols-[2fr_1fr_1fr_80px]
+                gap-5
+                px-5 py-4
+                bg-gray-50
+                border-b border-gray-200
+                text-xs
+                font-bold
+                uppercase
+                tracking-wide
+                text-gray-500
+              "
+        >
+          <span>Blog</span>
+          <span>Category</span>
+          <span>Date</span>
+          <span className="text-center">Action</span>
+        </div>
+
+        {blogLoading ? (
+          <div className="min-h-[220px] flex items-center justify-center">
+            <img
+              src="/images/loading_animation.svg"
+              alt="Loading"
+              className="w-12 h-12"
+            />
+          </div>
+        ) : blogs.length > 0 ? (
+          blogs.map((blog) => (
+            <div
+              key={blog?.id}
+              className="
+    p-4
+    border-b border-gray-100
+    last:border-b-0
+    hover:bg-gray-50
+    transition
+  "
+            >
+
+              {/* Desktop Layout */}
+              <div className="hidden lg:grid lg:grid-cols-[2fr_1fr_1fr_80px] gap-5 items-center">
+
+                <div className="flex items-center gap-4 min-w-0">
+                  <img
+                    src={blog?.image?.url}
+                    alt={blog?.title}
                     className="
-              grid
-              xl:grid-cols-[2.5fr_3fr_1fr_1fr_1fr]
-              lg:grid-cols-[2.5fr_3fr_1fr_1fr]
-              sm:grid-cols-[2fr_3fr_1fr]
-              grid-cols-[1fr]
-              gap-4
-              items-center
-              p-4
-              border-b
-              border-gray-200
-              hover:bg-gray-50
-              transition-all
-            "
+    w-16 h-16
+    sm:w-24 sm:h-20
+    rounded-xl
+    object-cover
+    border border-gray-200
+    shrink-0
+  "
+                  />
+
+                  <div className="min-w-0">
+                    <h4 className="font-semibold text-gray-800 line-clamp-2">
+                      {blog?.title}
+                    </h4>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="inline-flex px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">
+                    {blog?.category || "General"}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                  <CalendarDays size={13} />
+                  {blog?.created_at
+                    ? new Date(blog.created_at).toLocaleDateString()
+                    : "—"}
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() =>
+                      navigate(`/admin/updateblog/${blog?.id}`)
+                    }
+                    className="
+          h-8 w-8
+          rounded-md
+          bg-green-50
+          text-green-600
+          flex items-center justify-center
+          hover:bg-green-100
+          transition
+        "
                   >
+                    <FaEdit size={15} />
+                  </button>
 
-                    {/* Blog Info */}
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={blog?.image?.url}
-                        alt={blog?.title}
-                        className="
-                  w-20
-                  h-16
-                  object-cover
-                  rounded-lg
-                  border
-                  border-gray-200
-                  shrink-0
-                "
-                      />
+                  <button
+                    onClick={() => deleteBlog(blog?.id)}
+                    className="
+          h-8 w-8
+          rounded-md
+          bg-red-50
+          text-red-600
+          flex items-center justify-center
+          hover:bg-red-100
+          transition
+        "
+                  >
+                    <MdDeleteOutline size={18} />
+                  </button>
+                </div>
 
-                      <div>
-                        <h4 className="font-semibold text-gray-800 line-clamp-2">
-                          {blog?.title}
-                        </h4>
-                      </div>
-                    </div>
+              </div>
 
-                    {/* Description */}
-                    <div className="hidden sm:block">
-                      <div
-                        className="text-sm text-gray-600 line-clamp-3"
-                        dangerouslySetInnerHTML={{
-                          __html: blog?.description
-                            ?.replace(
-                              /style="[^"]*color:[^";]+;?[^"]*"/gi,
-                              ""
-                            )
-                            ?.replace(/color:[^;"]+;?/gi, "")
-                        }}
-                      />
-                    </div>
+              {/* Mobile & Tablet Layout */}
+              <div className="lg:hidden">
 
-                    {/* Category */}
-                    <div className="hidden lg:flex justify-center">
-                      <span
-                        className="
-                  px-3
-              py-1
-              text-xs
-              bg-blue-50
-              text-blue-600
-              rounded-full
-              font-medium
-                "
-                      >
-                        {blog?.category || "General"}
-                      </span>
-                    </div>
+                <div className="flex gap-4">
 
-                    {/* Date */}
-                    <div className="hidden xl:flex justify-center">
-                      <span
-                        className="
-                  px-3
-                  py-1
-                  rounded-full
-                  text-xs
-                  font-medium
-                  bg-gray-100
-                  text-gray-500
-                "
-                      >
-                        {new Date(blog?.created_at).toLocaleDateString()}
-                      </span>
-                    </div>
+                  <img
+                    src={blog?.image?.url}
+                    alt={blog?.title}
+                    className="
+          w-24 h-20
+          rounded-xl
+          object-cover
+          border border-gray-200
+          shrink-0
+        "
+                  />
 
-                    {/* Actions */}
-                    <div className="flex justify-center gap-2">
+                  <div className="flex-1 min-w-0">
+
+                    <h4 className="font-semibold text-gray-800 text-sm sm:text-base line-clamp-2 break-words">
+                      {blog?.title}
+                    </h4>
+
+                    <div className="flex flex-wrap gap-2 mt-3">
 
                       <button
                         onClick={() =>
                           navigate(`/admin/updateblog/${blog?.id}`)
                         }
                         className="
-                      h-8
-                      w-8
-                      rounded
-                      bg-green-50
-                      text-green-600
-                      flex
-                      items-center
-                      justify-center
-                      hover:bg-green-100
-                      transition
-                    "
+        h-8 w-8
+        rounded-md
+        bg-green-50
+        text-green-600
+        flex items-center justify-center
+      "
                       >
-                        <FaEdit size={15} />
+                        <FaEdit size={14} />
                       </button>
 
                       <button
                         onClick={() => deleteBlog(blog?.id)}
                         className="
-                      h-8
-                      w-8
-                      rounded
-                      bg-red-50
-                      text-red-600
-                      flex
-                      items-center
-                      justify-center
-                      hover:bg-red-100
-                      transition
-              "
+        h-8 w-8
+        rounded-md
+        bg-red-50
+        text-red-600
+        flex items-center justify-center
+      "
                       >
                         <MdDeleteOutline size={18} />
                       </button>
@@ -212,16 +218,28 @@ const ListBlog = () => {
                     </div>
 
                   </div>
-                ))}
+
+                </div>
 
               </div>
-            </div> :
-            <div className="flex items-center justify-center min-h-[180px] bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
-              <p className="text-gray-500">
-                No blogs found
-              </p>
-            </div>}
-        </div>}
+
+            </div>
+          ))
+        ) : (
+          <div className="min-h-[220px] flex flex-col items-center justify-center text-center">
+            <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+              <FileText size={24} className="text-gray-400" />
+            </div>
+
+            <p className="font-semibold text-gray-700">
+              No blogs found
+            </p>
+
+            <p className="text-sm text-gray-400 mt-1">
+              Start publishing content for your customers.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )

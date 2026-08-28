@@ -2,11 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios';
 import { AppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
-import upload_area from '/images/upload_area.svg'
 import { useContext } from 'react';
 import Quill from 'quill';
 import { LuPlus, LuUpload } from 'react-icons/lu';
-import DashboardNavbar from './DashboardNavbar';
 
 const AddBlog = () => {
   const editorRef = useRef(null);
@@ -16,7 +14,7 @@ const AddBlog = () => {
   const [image, setImage] = useState(false);
   const [title, setTitle] = useState('');
 
-  const { backendUrl, isAdmin, fetchBlogs, fetchLatestBlogs,navigate } = useContext(AppContext);
+  const { backendUrl, isAdmin, fetchBlogs, fetchLatestBlogs, navigate } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
 
   const onSubmitHandler = async (e) => {
@@ -71,34 +69,32 @@ const AddBlog = () => {
   }, [])
 
   return (
-    <div className='flex-1 min-h-screen'>
-      <DashboardNavbar />
-      <div className='flex items-center justify-center w-full p-4 md:p-6 lg:p-8 text-gray-600'>
-        <form
-          onSubmit={onSubmitHandler}
-          className="w-full flex justify-center"
-        >
-          <div className="w-full max-w-4xl bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
+    <div className='flex items-center justify-center w-full text-gray-600'>
+      <form
+        onSubmit={onSubmitHandler}
+        className="w-full flex justify-center"
+      >
+        <div className="w-full max-w-4xl bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
 
-            {/* Header */}
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold text-gray-800">
-                Create New Blog
-              </h3>
-              <p className="text-gray-500 mt-1">
-                Add a new article to your blog.
-              </p>
-            </div>
+          {/* Header */}
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold text-gray-800">
+              Create New Blog
+            </h3>
+            <p className="text-gray-500 mt-1">
+              Add a new article to your blog.
+            </p>
+          </div>
 
-            {/* Upload Image */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Featured Image
-              </label>
+          {/* Upload Image */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Featured Image
+            </label>
 
-              <label
-                htmlFor="image"
-                className="
+            <label
+              htmlFor="image"
+              className="
           flex flex-col items-center justify-center
           w-full lg:h-[200px] sm:h-[180px] h-[160px]
           border-2 border-dashed border-gray-300
@@ -108,48 +104,48 @@ const AddBlog = () => {
           hover:border-blue-500
           transition
         "
-              >
-                {!image ? (
-                  <>
-                    <LuUpload className="text-3xl text-gray-400 mb-2.5" />
-                    <p className="text-sm text-gray-500">
-                      Click to upload image
-                    </p>
-                    <p className="text-xs text-gray-400 mt-1">
-                      PNG, JPG, JPEG, WEBP
-                    </p>
-                  </>
-                ) : (
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt="preview"
-                    className="h-full w-full object-cover rounded-lg"
-                  />
-                )}
-
-                <input
-                  id="image"
-                  type="file"
-                  hidden
-                  onChange={(e) => setImage(e.target.files[0])}
+            >
+              {!image ? (
+                <>
+                  <LuUpload className="text-3xl text-gray-400 mb-2.5" />
+                  <p className="text-sm text-gray-500">
+                    Click to upload image
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    PNG, JPG, JPEG, WEBP
+                  </p>
+                </>
+              ) : (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="preview"
+                  className="h-full w-full object-cover rounded-lg"
                 />
-              </label>
-              <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'All fields are required' || error === 'Invalid format (jpg, jpeg, png, webp only)' ? error : null}</h6>
-            </div>
-
-            {/* Title */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Blog Title
-              </label>
+              )}
 
               <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter blog title..."
-                required
-                className="
+                id="image"
+                type="file"
+                hidden
+                onChange={(e) => setImage(e.target.files[0])}
+              />
+            </label>
+            <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'All fields are required' || error === 'Invalid format (jpg, jpeg, png, webp only)' ? error : null}</h6>
+          </div>
+
+          {/* Title */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Blog Title
+            </label>
+
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter blog title..."
+              required
+              className="
           w-full
           px-4 py-3
           rounded-lg
@@ -159,21 +155,21 @@ const AddBlog = () => {
           focus:ring-blue-500
           focus:border-blue-500
         "
-              />
-              <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'All fields are required' || error === 'Title must be between 12–120 characters' ? error : null}</h6>
-            </div>
+            />
+            <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'All fields are required' || error === 'Title must be between 12–120 characters' ? error : null}</h6>
+          </div>
 
-            {/* Category */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Blog Category
-              </label>
+          {/* Category */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Blog Category
+            </label>
 
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
-                className="
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+              className="
       w-full
       px-4
       py-3
@@ -187,26 +183,26 @@ const AddBlog = () => {
       focus:border-blue-500
       transition
     "
-              >
-                <option value="">Select Category</option>
+            >
+              <option value="">Select Category</option>
 
-                <option value="Fitness">Fitness</option>
-                <option value="Fashion">Fashion</option>
-                <option value="LifeStyle">LifeStyle</option>
-                <option value="Footwear">Footwear</option>
-              </select>
-              <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'All fields are required' ? error : null}</h6>
-            </div>
+              <option value="Fitness">Fitness</option>
+              <option value="Fashion">Fashion</option>
+              <option value="LifeStyle">LifeStyle</option>
+              <option value="Footwear">Footwear</option>
+            </select>
+            <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'All fields are required' ? error : null}</h6>
+          </div>
 
-            {/* Editor */}
-            <div className="mb-8">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Blog Description
-              </label>
+          {/* Editor */}
+          <div className="mb-8">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Blog Description
+            </label>
 
-              <div
-                ref={editorRef}
-                className="
+            <div
+              ref={editorRef}
+              className="
           bg-white
           min-h-[200px]
           max-h-[400px]
@@ -215,15 +211,15 @@ const AddBlog = () => {
           overflow-hidden
           overflow-y-auto
         "
-              />
-              <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'All fields are required' || error === 'Description must be at least 256 characters' ? error : null}</h6>
-            </div>
+            />
+            <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'All fields are required' || error === 'Description must be at least 256 characters' ? error : null}</h6>
+          </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="
         flex items-center justify-center gap-2
         bg-blue-600
         hover:bg-blue-700
@@ -234,15 +230,14 @@ const AddBlog = () => {
         rounded-xl
         transition
       "
-            >
-              <LuPlus size={18} />
+          >
+            <LuPlus size={18} />
 
-              {loading ? "Adding Blog..." : "Publish Blog"}
-            </button>
+            {loading ? "Adding Blog..." : "Publish Blog"}
+          </button>
 
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   )
 }

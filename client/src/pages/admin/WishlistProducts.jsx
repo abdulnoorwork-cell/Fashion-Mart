@@ -37,79 +37,168 @@ const WishlistProducts = () => {
     }, [])
 
     return (
-        <div className='flex-1 min-h-screen'>
-            <DashboardNavbar />
-            <div className='p-4 md:p-6 lg:p-8 text-gray-800'>
-                <div className='flex flex-col w-full'>
-                    <h3 className="text-xl font-bold text-gray-800 mb-4">Wishlist</h3>
-                    <div className='admin_products_label grid sm:grid-cols-[3fr_1fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] items-center gap-2 sm:py-3 py-2 px-3 text-xs uppercase font-semibold bg-gray-200 border border-dashed border-gray-300 rounded-tl-xl rounded-tr-xl'>
-                        <label>Product</label>
-                        <label className='mx-auto hidden sm:block'>Category</label>
-                        <label className='mx-auto hidden sm:block'>Price</label>
-                        <label className='mx-auto hidden sm:block'>Wishlist</label>
-                        <label className='mx-auto hidden sm:block'>Action</label>
-                    </div>
-                    {wishlistLoading ? <div className="flex items-center justify-center min-h-[180px] bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
-                        <img src='/images/loading_animation.svg' alt="loader" className='mx-auto' />
-                    </div> :
-                        <div className='text-sm'>
-                            {wishlistProducts.length > 0 ?
-                                <div className='overflow-hidden bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300'>
-                                    {wishlistProducts?.reverse().map((w, i) => (
-                                        <div key={i} className='border-b
-            border-gray-200
-            hover:bg-gray-50
-            transition-all
-            duration-200
-            p-4
-            grid sm:grid-cols-[3fr_1fr_1fr_1fr_1fr] grid-cols-1 gap-3 items-center'>
-                                            <div className='main_img flex items-center sm:gap-4 gap-3'>
-                                                <img className='w-14 h-14 rounded-sm object-cover border border-gray-200 bg-gray-200' src={w.images[0].url} alt="" />
-                                                <div className='flex flex-col'>
-                                                    <h6 className='leading-[1.3em] font-medium'>{w?.name}</h6>
-                                                </div>
-                                            </div>
-                                            <h6 className='sm:mx-auto sm:text-center px-3
-              py-1
-              text-xs
-              bg-blue-50
-              text-blue-600
-              rounded-full
-              font-medium
-              w-fit'>{w?.category}</h6>
-                                            <h6 className='sm:mx-auto sm:text-center font-medium leading-[1.4em]'>{currency}.{w?.offerPrice}</h6>
-                                            <h6 className='sm:mx-auto sm:text-center leading-[1.4em] font-medium flex items-center gap-1'><span className='text-red-500 text-[15px]'><FaHeart /></span> {w?.total_wishes < 10 ? "0" + w?.total_wishes : 1}</h6>
-                                            <div className="flex justify-center">
-                                                <button
-                                                    onClick={() => deleteWishlistProduct(w?.id)}
-                                                    className="
-                                                              h-8
-                                                              w-8
-                                                              rounded
-                                                              bg-red-50
-                                                              text-red-600
-                                                              flex
-                                                              items-center
-                                                              justify-center
-                                                              hover:bg-red-100
-                                                              transition
-                                                      "
-                                                >
-                                                    <MdDeleteOutline size={18} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div> :
-                                <div className="flex items-center justify-center min-h-[180px] bg-white rounded-bl-xl rounded-br-xl border border-t-0 border-dashed border-gray-300">
-                                    <p className="text-gray-500">
-                                        No products found
-                                    </p>
-                                </div>
-                            }
-                        </div>}
+        <div className="flex flex-col w-full">
+
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div>
+                    <h3 className="text-2xl font-bold text-gray-900">
+                        Wishlist Products
+                    </h3>
+
+                    <p className="text-gray-500 mt-1">
+                        Products most loved by your customers
+                    </p>
+                </div>
+
+                <div className="bg-red-50 text-red-600 px-5 py-3 rounded-xl font-semibold">
+                    Total Wishlist: {wishlistProducts.length}
                 </div>
             </div>
+
+            {wishlistLoading ? (
+                <div className="flex items-center justify-center min-h-[220px] bg-white rounded-2xl border border-gray-200">
+                    <img
+                        src="/images/loading_animation.svg"
+                        alt="loader"
+                        className="w-12 h-12"
+                    />
+                </div>
+            ) : wishlistProducts.length > 0 ? (
+                <div className="grid gap-4">
+
+                    {wishlistProducts.slice().reverse().map((w, i) => (
+
+                        <div
+                            key={i}
+                            className="
+            bg-white
+            border border-gray-200
+            rounded-2xl
+            p-4
+            hover:shadow-lg
+            transition-all
+          "
+                        >
+
+                            <div className="flex flex-col lg:flex-row gap-5">
+
+                                {/* Product */}
+                                <div className="flex items-center gap-3 flex-1 min-w-0">
+
+                                    <img
+                                        src={w.images?.[0]?.url}
+                                        alt={w.name}
+                                        className="
+                  w-16 h-16
+                  rounded-xl
+                  object-cover
+                  border border-gray-200
+                  bg-gray-100
+                  shrink-0
+                "
+                                    />
+
+                                    <div className="min-w-0">
+                                        <h4 className="font-semibold text-gray-900 line-clamp-2">
+                                            {w.name}
+                                        </h4>
+
+                                        <p className="text-sm text-gray-500 mt-1 lg:hidden">
+                                            {w.category}
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                                {/* Category */}
+                                <div className="lg:w-[140px]">
+                                    <span
+                                        className="
+                  inline-flex
+                  px-3 py-1
+                  rounded-full
+                  bg-blue-50
+                  text-blue-600
+                  text-xs
+                  font-semibold
+                "
+                                    >
+                                        {w.category}
+                                    </span>
+                                </div>
+
+                                {/* Price */}
+                                <div className="lg:w-[120px]">
+                                    <p className="font-bold text-gray-900">
+                                        {currency}. {w.offerPrice}
+                                    </p>
+                                </div>
+
+                                {/* Wishlist Count */}
+                                <div className="lg:w-[120px]">
+
+                                    <div className="flex items-center gap-2">
+
+                                        <span className="text-red-500">
+                                            <FaHeart />
+                                        </span>
+
+                                        <span className="font-semibold">
+                                            {w.total_wishes}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                                {/* Action */}
+                                <div className="lg:w-[80px]">
+
+                                    <button
+                                        onClick={() => deleteWishlistProduct(w.id)}
+                                        className="
+                  w-full lg:w-10
+                  h-10
+                  rounded-lg
+                  bg-red-50
+                  text-red-600
+                  flex
+                  items-center
+                  justify-center
+                  hover:bg-red-100
+                  transition
+                "
+                                    >
+                                        <MdDeleteOutline size={20} />
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    ))}
+
+                </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center min-h-[220px] bg-white rounded-2xl border border-gray-200">
+
+                    <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                        <FaHeart className="text-gray-400" size={24} />
+                    </div>
+
+                    <p className="font-semibold text-gray-700">
+                        No wishlist products found
+                    </p>
+
+                    <p className="text-sm text-gray-400 mt-1">
+                        Wishlist products will appear here.
+                    </p>
+
+                </div>
+            )}
+
         </div>
     )
 }

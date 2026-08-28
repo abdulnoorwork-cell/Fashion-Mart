@@ -103,31 +103,29 @@ const UpdateBlog = () => {
     //     <button type='submit' className='mt-7 flex items-center gap-1 sm:text-sm text-xs px-8 w-fit py-[10px] bg-orange-600 text-white rounded-md cursor-pointer'>{loading ? 'Updating...' : 'Save Changes'}</button>
     //   </div>
     // </form>
-    <div className='flex-1 min-h-screen'>
-      <DashboardNavbar />
-      <div className='p-4 md:p-6 lg:p-8'>
-        <form
-          onSubmit={onSubmitHandler}
-          className="w-full flex justify-center text-gray-600"
-        >
-          <div className="w-full max-w-4xl bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
+    <div className='p-4 md:p-6 lg:p-8'>
+      <form
+        onSubmit={onSubmitHandler}
+        className="w-full flex justify-center text-gray-600"
+      >
+        <div className="w-full max-w-4xl bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
 
-            {/* Header */}
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold text-gray-800">
-                Update Blog
-              </h3>
-            </div>
+          {/* Header */}
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold text-gray-800">
+              Update Blog
+            </h3>
+          </div>
 
-            {/* Upload Image */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Featured Image
-              </label>
+          {/* Upload Image */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Featured Image
+            </label>
 
-              <label
-                htmlFor="image"
-                className="
+            <label
+              htmlFor="image"
+              className="
               flex flex-col items-center justify-center
               w-full h-[200px]
               border-2 border-dashed border-gray-300
@@ -137,41 +135,41 @@ const UpdateBlog = () => {
               hover:bg-blue-50
               transition
             "
-              >
-                {!image ? (
-                  <>
-                    <img src={blog.image && blog.image.url} alt={blog.title} className='h-full w-full object-cover rounded-lg' />
-                  </>
-                ) : (
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt="preview"
-                    className="h-full w-full object-cover rounded-lg"
-                  />
-                )}
-
-                <input
-                  id="image"
-                  type="file"
-                  hidden
-                  onChange={(e) => setImage(e.target.files[0])}
+            >
+              {!image ? (
+                <>
+                  <img src={blog.image && blog.image.url} alt={blog.title} className='h-full w-full object-cover rounded-lg' />
+                </>
+              ) : (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="preview"
+                  className="h-full w-full object-cover rounded-lg"
                 />
-              </label>
-            </div>
-
-            {/* Title */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Blog Title
-              </label>
+              )}
 
               <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter blog title..."
-                required
-                className="
+                id="image"
+                type="file"
+                hidden
+                onChange={(e) => setImage(e.target.files[0])}
+              />
+            </label>
+          </div>
+
+          {/* Title */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Blog Title
+            </label>
+
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter blog title..."
+              required
+              className="
               w-full
               px-4 py-3
               rounded-lg
@@ -181,20 +179,20 @@ const UpdateBlog = () => {
               focus:ring-blue-500
               focus:border-blue-500
             "
-              />
-            </div>
+            />
+          </div>
 
-            {/* Category */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Blog Category
-              </label>
+          {/* Category */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Blog Category
+            </label>
 
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
-                className="
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+              className="
       w-full
       px-4
       py-3
@@ -208,39 +206,39 @@ const UpdateBlog = () => {
       focus:border-blue-500
       transition
     "
-              >
-                <option value="">Select Category</option>
+            >
+              <option value="">Select Category</option>
 
-                <option value="Fitness">Fitness</option>
-                <option value="Fashion">Fashion</option>
-                <option value="LifeStyle">LifeStyle</option>
-                <option value="Footwear">Footwear</option>
-              </select>
-            </div>
+              <option value="Fitness">Fitness</option>
+              <option value="Fashion">Fashion</option>
+              <option value="LifeStyle">LifeStyle</option>
+              <option value="Footwear">Footwear</option>
+            </select>
+          </div>
 
-            {/* Editor */}
-            <div className="mb-8">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Blog Description
-              </label>
+          {/* Editor */}
+          <div className="mb-8">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Blog Description
+            </label>
 
-              <div
-                ref={editorRef}
-                className="
+            <div
+              ref={editorRef}
+              className="
               bg-white
               min-h-[200px]
               border border-gray-300
               rounded-lg
               overflow-hidden
             "
-              />
-            </div>
+            />
+          </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="
             flex items-center justify-center gap-2
             bg-blue-600
             hover:bg-blue-700
@@ -251,15 +249,14 @@ const UpdateBlog = () => {
             rounded-xl
             transition
           "
-            >
-              <LuPlus size={18} />
+          >
+            <LuPlus size={18} />
 
-              {loading ? "Saving Changes..." : "Update Blog"}
-            </button>
+            {loading ? "Saving Changes..." : "Update Blog"}
+          </button>
 
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   )
 }

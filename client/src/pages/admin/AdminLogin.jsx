@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 const AdminLogin = () => {
   const { backendUrl } = useContext(AppContext);
-  const [showPassword, setShowPassword] = useState(true)
+  const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('abdulnoorwork@gmail.com')
   const [password, setPassword] = useState('toxd egor wsfl ovjv')
   const [error, setError] = useState('')
@@ -61,7 +61,7 @@ const AdminLogin = () => {
           {/* Form */}
           <form
             onSubmit={onSubmitHandler}
-            className="p-8 space-y-5"
+            className="p-8 space-y-5 text-sm"
           >
             {/* Email */}
             <div>
@@ -76,8 +76,7 @@ const AdminLogin = () => {
                 placeholder="admin@example.com"
                 className="
                   w-full
-                  px-4
-                  py-3
+                  p-4
                   border
                   border-gray-300
                   rounded-lg
@@ -105,8 +104,7 @@ const AdminLogin = () => {
                   placeholder="Enter password"
                   className="
                     w-full
-                    px-4
-                    py-3
+                    p-4
                     border
                     border-gray-300
                     rounded-lg
@@ -147,7 +145,7 @@ const AdminLogin = () => {
               disabled={loading}
               className="
                 w-full
-                py-3
+                py-4
                 rounded-lg
                 bg-blue-600
                 hover:bg-blue-700
@@ -155,6 +153,7 @@ const AdminLogin = () => {
                 font-medium
                 transition
                 disabled:opacity-60
+                text-base
               "
             >
               {loading ? "Signing In..." : "Login"}

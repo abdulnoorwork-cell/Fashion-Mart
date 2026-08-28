@@ -5,7 +5,7 @@ import {
 import ProductCard from "../components/ProductCard";
 import QuickViewModel from "../components/QuickViewModel";
 import { AppContext } from "../context/AppContext";
-import Fade from "../components/Fade";
+import { motion } from "framer-motion";
 
 const Shop = () => {
     const { products, currency } = useContext(AppContext);
@@ -138,6 +138,15 @@ const Shop = () => {
             endIndex
         );
 
+    const containerVariants = {
+        hidden: {},
+        show: {
+            transition: {
+                staggerChildren: 0.08,
+            },
+        },
+    };
+
     return (
         <>
             <QuickViewModel product={selectedProduct} onClose={() => setSelectedProduct(null)} />
@@ -153,7 +162,8 @@ const Shop = () => {
 
                     <div className="absolute inset-0 bg-black/70"></div>
 
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <div
+                        className="absolute inset-0 flex flex-col items-center justify-center">
                         <h1 className="text-4xl md:text-6xl font-black uppercase italic">
                             Shop
                         </h1>
@@ -173,7 +183,12 @@ const Shop = () => {
                         SIDEBAR
                     ========================================== */}
 
-                        <aside className="lg:col-span-1">
+                        <motion.aside
+                            className="lg:col-span-1"
+                            initial={{ opacity: 0, x: -40 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}>
 
                             {/* Search */}
                             <div className="bg-[#222] p-5 mb-6">
@@ -291,13 +306,17 @@ const Shop = () => {
 
                             </div>
 
-                        </aside>
+                        </motion.aside>
 
                         {/* ==========================================
                         PRODUCTS
                     ========================================== */}
 
-                        <div className="lg:col-span-3">
+                        <motion.div
+                            className="lg:col-span-3"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}>
 
                             {/* Top Bar */}
                             <div className="flex flex-col md:flex-row justify-between mb-8 gap-4 items-center">
@@ -358,14 +377,39 @@ const Shop = () => {
                             </div>
 
                             {/* Product Grid */}
-                            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4">
+                            <motion.div
+                                className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4"
+                                variants={containerVariants}
+                                initial="hidden"
+                                whileInView="show"
+                                viewport={{ once: true, amount: 0.05 }}>
 
                                 {currentProducts.length > 0 ? (
 
                                     currentProducts.map((product,index) => (
-                                        <Fade key={product.id} delay={index * 0.2}>
-                                            <ProductCard key={product.id} product={product} setSelectedProduct={setSelectedProduct} />
-                                        </Fade>
+                                        <motion.div
+                                            key={product.id}
+                                            initial={{
+                                                opacity: 0,
+                                                y: 50,
+                                            }}
+                                            whileInView={{
+                                                opacity: 1,
+                                                y: 0,
+                                            }}
+                                            viewport={{
+                                                once: true,
+                                            }}
+                                            transition={{
+                                                duration: 0.5,
+                                                delay: index * 0.08,
+                                            }}
+                                        >
+                                            <ProductCard
+                                                product={product}
+                                                setSelectedProduct={setSelectedProduct}
+                                            />
+                                        </motion.div>
                                     ))
 
                                 ) : (
@@ -384,14 +428,19 @@ const Shop = () => {
 
                                 )}
 
-                            </div>
+                            </motion.div>
 
                             {/* ==========================================
                             PROFESSIONAL PAGINATION
                             KEPT YOUR PAGINATION STRUCTURE
                         ========================================== */}
 
-                            {totalPages > 1 && <div className="flex items-center justify-center gap-2 mt-8 flex-wrap">
+                            {totalPages > 1 && <motion.div
+                                className="flex items-center justify-center gap-2 mt-8 flex-wrap"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6 }}>
 
                                 {/* Previous */}
                                 <button
@@ -467,9 +516,9 @@ const Shop = () => {
                                     Next
                                 </button>
 
-                            </div>}
+                            </motion.div>}
 
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
