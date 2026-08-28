@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, {
+    useContext,
+    useEffect,
+    useState,
+    useMemo,
+    useCallback,
+} from "react";
 import {
     FaSearch,
 } from "react-icons/fa";
@@ -9,7 +15,6 @@ import { motion } from "framer-motion";
 
 const Shop = () => {
     const { products, currency } = useContext(AppContext);
-
     const [selectedProduct, setSelectedProduct] = useState(null)
 
     // Filters
@@ -22,101 +27,91 @@ const Shop = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage, setProductsPerPage] = useState(10);
 
-    useEffect(() => {
-        const updateItems = () => {
-            if (window.innerWidth < 1280) {
-                setProductsPerPage(6)
-            }
-            else if (window.innerWidth < 1536) {
-                setProductsPerPage(8)
-            }
-            else {
-                setProductsPerPage(10)
-            }
+    const updateItems = useCallback(() => {
+        if (window.innerWidth < 1280) {
+            setProductsPerPage(6)
         }
+        else if (window.innerWidth < 1536) {
+            setProductsPerPage(8)
+        }
+        else {
+            setProductsPerPage(10)
+        }
+    }, [])
+
+    useEffect(() => {
         updateItems()
         window.addEventListener('resize', updateItems)
         return () => window.removeEventListener('resize', updateItems)
-    }, [])
+    }, [updateItems])
 
     // ==========================================
     // FILTER + SEARCH + PRICE
     // ==========================================
 
-    const filteredProducts = products
-        .filter((product) => {
-            // Search
-            const matchesSearch = product.name
-                ?.toLowerCase()
-                .includes(search.toLowerCase());
+    const filteredProducts = useMemo(() => {
+        return products
+            .filter((product) => {
+                const matchesSearch = product.name
+                    ?.toLowerCase()
+                    .includes(search.toLowerCase());
 
-            // Category
-            const matchesCategory =
-                selectedCategory === "All" ||
-                product.category?.toLowerCase() ===
-                selectedCategory.toLowerCase();
+                const matchesCategory =
+                    selectedCategory === "All" ||
+                    product.category?.toLowerCase() ===
+                    selectedCategory.toLowerCase();
 
-            // Price
-            const productPrice = Number(
-                product.offerPrice || product.price || 0
-            );
-
-            const matchesPrice = productPrice <= maxPrice;
-
-            return matchesSearch && matchesCategory && matchesPrice;
-        })
-
-        // ==========================================
-        // SORTING
-        // ==========================================
-
-        .sort((a, b) => {
-            const priceA = Number(
-                a.offerPrice || a.price || 0
-            );
-
-            const priceB = Number(
-                b.offerPrice || b.price || 0
-            );
-
-            if (sortBy === "price-low") {
-                return priceA - priceB;
-            }
-
-            if (sortBy === "price-high") {
-                return priceB - priceA;
-            }
-
-            if (sortBy === "newest") {
-                return (
-                    new Date(b.created_at) -
-                    new Date(a.created_at)
+                const productPrice = Number(
+                    product.offerPrice || product.price || 0
                 );
-            }
 
-            if (sortBy === "name-az") {
-                return a.name.localeCompare(b.name);
-            }
+                const matchesPrice = productPrice <= maxPrice;
 
-            if (sortBy === "name-za") {
-                return b.name.localeCompare(a.name);
-            }
+                return (
+                    matchesSearch &&
+                    matchesCategory &&
+                    matchesPrice
+                );
+            })
+            .sort((a, b) => {
+                const priceA = Number(
+                    a.offerPrice || a.price || 0
+                );
 
-            return 0;
-        });
+                const priceB = Number(
+                    b.offerPrice || b.price || 0
+                );
 
-    // ==========================================
-    // RESET PAGE WHEN FILTER CHANGES
-    // ==========================================
+                if (sortBy === "price-low") {
+                    return priceA - priceB;
+                }
 
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [
+                if (sortBy === "price-high") {
+                    return priceB - priceA;
+                }
+
+                if (sortBy === "newest") {
+                    return (
+                        new Date(b.created_at) -
+                        new Date(a.created_at)
+                    );
+                }
+
+                if (sortBy === "name-az") {
+                    return a.name.localeCompare(b.name);
+                }
+
+                if (sortBy === "name-za") {
+                    return b.name.localeCompare(a.name);
+                }
+
+                return 0;
+            });
+    }, [products,
         search,
         selectedCategory,
         sortBy,
-        maxPrice,
-    ]);
+        maxPrice])
 
     // ==========================================
     // YOUR PAGINATION
@@ -386,7 +381,7 @@ const Shop = () => {
 
                                 {currentProducts.length > 0 ? (
 
-                                    currentProducts.map((product,index) => (
+                                    currentProducts.map((product, index) => (
                                         <motion.div
                                             key={product.id}
                                             initial={{
