@@ -21,12 +21,10 @@ const LatestProducts = () => {
   const cardVariants = {
     hidden: {
       opacity: 0,
-      y: 60,
       scale: 0.95,
     },
     show: {
       opacity: 1,
-      y: 0,
       scale: 1,
       transition: {
         duration: 0.6,
