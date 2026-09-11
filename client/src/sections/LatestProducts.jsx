@@ -18,19 +18,6 @@ const LatestProducts = () => {
     },
   };
 
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-    },
-    show: {
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: easeInOut,
-      },
-    },
-  };
-
   return (
     <>
       <QuickViewModel
@@ -63,11 +50,9 @@ const LatestProducts = () => {
             {latestProducts.map((product) => (
               <motion.div
                 key={product.id}
-                variants={cardVariants}
-                whileHover={{
-                  y: -8,
-                  transition: { duration: 0.2 },
-                }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
               >
                 <ProductCard
                   product={product}
