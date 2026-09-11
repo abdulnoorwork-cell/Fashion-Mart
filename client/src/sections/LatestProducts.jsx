@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { motion } from "framer-motion";
+import { easeInOut, motion } from "framer-motion";
 import Heading from "../components/Heading";
 import { AppContext } from "../context/AppContext";
 import QuickViewModel from "../components/QuickViewModel";
@@ -21,14 +21,12 @@ const LatestProducts = () => {
   const cardVariants = {
     hidden: {
       opacity: 0,
-      scale: 0.95,
     },
     show: {
       opacity: 1,
-      scale: 1,
       transition: {
         duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1],
+        ease: easeInOut,
       },
     },
   };
